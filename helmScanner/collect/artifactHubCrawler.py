@@ -5,6 +5,7 @@ ArtifactHub.io HELM Crawler v0.3
 Matt Johnson <matt@bridgecrew.io> 
 
 :env ARTIFACTHUB_TOKEN: API token from artifacthub.io
+:env ARTIFACTHUB_TOKEN_SECRET: API secret from artifacthub.io
 """
 
 import logging.handlers
@@ -39,6 +40,12 @@ class ArtifactHubCrawler:
             logger.info("No env ARTIFACTHUB_TOKEN found")
             exit()
 
+        try:
+            self.ARTIFACTHUB_TOKEN_SECRET = os.environ['ARTIFACTHUB_TOKEN_SECRET']
+        except KeyError:
+            logger.info("No env ARTIFACTHUB_TOKEN_SECRET found")
+            exit()
+
     def crawl(self):
         """
         crawl uses the HELM search functioanlity of artifacthub.io to find all helm *repositories* which may contain multiple charts.
@@ -56,7 +63,7 @@ class ArtifactHubCrawler:
         logging.info("Artifacthub Helm crawler started.")
         try:
             currentRepo = 0
-            headers = {'X-API-KEY': self.ARTIFACTHUB_TOKEN }
+            headers = {'X-API-KEY-ID': self.ARTIFACTHUB_TOKEN, 'X-API-KEY-SECRET': self.ARTIFACTHUB_TOKEN_SECRET}
             logging.info("Receiving latest ArtifactHub repo results.")
             response = requests.get('https://artifacthub.io/api/v1/repositories/helm', headers=headers)
             response.raise_for_status()

@@ -8,6 +8,7 @@ import traceback
 import tarfile
 import pygraphviz as pgv
 import glob
+import re
 
 from helmScanner.collect import artifactHubCrawler
 from helmScanner.output import result_writer
@@ -54,7 +55,8 @@ def parse_helm_dependency_output(o):
     return chart_dependencies
 
 def scan_files():
-    crawlDict, totalRepos, totalPackages = artifactHubCrawler().crawl()
+    crawler = artifactHubCrawler.ArtifactHubCrawler()
+    crawlDict, totalRepos, totalPackages = crawler.mockCrawl()
     print(f"Crawl completed with {totalPackages} charts from {totalRepos} repositories.")
 
     checks_table = []
@@ -65,6 +67,8 @@ def scan_files():
     extract_failures = []
     download_failures = []
     parse_deps_failures = []
+
+    chartNameFromResultDataExpression = '.*.RELEASE-NAME-(.*).default'
 
     for repoCount in crawlDict:
         repo = crawlDict[repoCount]
@@ -156,15 +160,16 @@ def scan_files():
                     res = results_scan.get_dict()
                     print(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Processing Results")
                     for passed_check in res["results"]["passed_checks"]:
+                        chartNameFromResultData = re.search(chartNameFromResultDataExpression, passed_check["resource"]).group(1)
                         check = [
                             repoChartPathName,
                             repo['repoName'],
                             chartPackage['name'],
                             chartPackage['version'],
-                            chartPackage['created_at'],
+                            chartPackage['ts'],
                             chartPackage['signed'],
                             chartPackage['security_report_created_at'],
-                            passed_check["helm_chart"],   
+                            chartNameFromResultData,   
                             chartPackage['is_operator'],
                             str(check_category(passed_check["check_id"])).lstrip("CheckCategories."),
                             passed_check["check_id"],
@@ -183,15 +188,16 @@ def scan_files():
                         #check.extend(add_meta(scan_time))
                         result_lst.append(check)
                     for failed_check in res["results"]["failed_checks"]:
+                        chartNameFromResultData = re.search(chartNameFromResultDataExpression, passed_check["resource"]).group(1)
                         check = [
                             repoChartPathName,
                             repo['repoName'],
                             chartPackage['name'],
                             chartPackage['version'],
-                            chartPackage['created_at'],
+                            chartPackage['ts'],
                             chartPackage['signed'],
                             chartPackage['security_report_created_at'],
-                            failed_check["helm_chart"],   
+                            chartNameFromResultData,   
                             chartPackage['is_operator'],
                             str(check_category(failed_check["check_id"])).lstrip("CheckCategories."),
                             failed_check["check_id"],
@@ -215,7 +221,7 @@ def scan_files():
                             repo['repoName'],
                             chartPackage['name'],
                             chartPackage['version'],
-                            chartPackage['created_at'],
+                            chartPackage['ts'],
                             chartPackage['signed'],
                             chartPackage['security_report_created_at'],
                             "empty scan",  
@@ -246,7 +252,7 @@ def scan_files():
                             repo['repoName'],
                             chartPackage['name'],
                             chartPackage['version'],
-                            chartPackage['created_at'],
+                            chartPackage['ts'],
                             chartPackage['signed'],
                             chartPackage['security_report_created_at'],
                             "error in scan",   
@@ -272,15 +278,16 @@ def scan_files():
                 try:
                     print(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Processing Summaries")
                     res = results_scan.get_dict()
+                    chartNameFromResultData = re.search(chartNameFromResultDataExpression, passed_check["resource"]).group(1)
                     summary_lst_item = [
                         repoChartPathName,
                         repo['repoName'],
                         chartPackage['name'],
                         chartPackage['version'],
-                        chartPackage['created_at'],
+                        chartPackage['ts'],
                         chartPackage['signed'],
                         chartPackage['security_report_created_at'],
-                        passed_check["helm_chart"],   
+                        chartNameFromResultData,   
                         chartPackage['is_operator'],
                         "success",
                         res["summary"]["passed"],
@@ -288,15 +295,16 @@ def scan_files():
                         res["summary"]["parsing_errors"]
                     ]
                 except:
+                    chartNameFromResultData = re.search(chartNameFromResultDataExpression, passed_check["resource"]).group(1)
                     summary_lst_item = [
                         repoChartPathName,
                         repo['repoName'],
                         chartPackage['name'],
                         chartPackage['version'],
-                        chartPackage['created_at'],
+                        chartPackage['ts'],
                         chartPackage['signed'],
                         chartPackage['security_report_created_at'],
-                        passed_check["helm_chart"],   
+                        chartNameFromResultData,   
                         chartPackage['is_operator'],
                         "failed",
                         0,
