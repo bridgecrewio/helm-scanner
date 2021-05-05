@@ -8,7 +8,7 @@ It needs plenty of work and we have a roadmap planned, in our [issues backlog, h
 You can find the written based on the data generated here, once the articles are live.
 
  - [Part 1](https://bridgecrew.io/blog/open-source-helm-security-research/)
- - Part 2 (not yet live)
+ - [Part 2](https://bridgecrew.io/blog/open-source-helm-security-research-part-2/)
  - Part 3 (not yet live)
 
 ## What is it?
