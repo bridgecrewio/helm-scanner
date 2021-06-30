@@ -1,8 +1,9 @@
 
 """
-ArtifactHub.io HELM Crawler v0.3
+ArtifactHub.io HELM Crawler v0.4
 ================================
 Matt Johnson <matt@bridgecrew.io> 
+Steve Giguere <eurogig@gmail.com>
 
 :env ARTIFACTHUB_TOKEN: API token from artifacthub.io
 :env ARTIFACTHUB_TOKEN_SECRET: API secret from artifacthub.io
@@ -37,13 +38,13 @@ class ArtifactHubCrawler:
         try:
             self.ARTIFACTHUB_TOKEN = os.environ['ARTIFACTHUB_TOKEN']
         except KeyError:
-            logger.info("No env ARTIFACTHUB_TOKEN found")
+            logger.warning("No env ARTIFACTHUB_TOKEN found")
             exit()
 
         try:
             self.ARTIFACTHUB_TOKEN_SECRET = os.environ['ARTIFACTHUB_TOKEN_SECRET']
         except KeyError:
-            logger.info("No env ARTIFACTHUB_TOKEN_SECRET found")
+            logger.warning("No env ARTIFACTHUB_TOKEN_SECRET found")
             exit()
 
     def crawl(self):
@@ -60,15 +61,27 @@ class ArtifactHubCrawler:
         """
         crawlDict = {}
         totalPackages = 0
+        reposPerRequest = 60
         logging.info("Artifacthub Helm crawler started.")
         try:
             currentRepo = 0
             headers = {'X-API-KEY-ID': self.ARTIFACTHUB_TOKEN, 'X-API-KEY-SECRET': self.ARTIFACTHUB_TOKEN_SECRET}
             logging.info("Receiving latest ArtifactHub repo results.")
-            response = requests.get('https://artifacthub.io/api/v1/repositories/helm', headers=headers)
+            response = requests.get(f"https://artifacthub.io/api/v1/repositories/search?offset=0&limit={reposPerRequest}&kind=0", headers=headers)
             response.raise_for_status()
+            maxRepos = int(response.headers["pagination-total-count"])
+            self.logger.info(f"Found max repos {maxRepos}")
             jsonResponse = response.json()
             totalRepos = len(jsonResponse)
+            offset = reposPerRequest
+            while (maxRepos > totalRepos):
+                # Get the rest of the repos
+                response = requests.get(f"https://artifacthub.io/api/v1/repositories/search?offset={offset}&limit={reposPerRequest}&kind=0", headers=headers)
+                response.raise_for_status()
+                jsonResponse += response.json()
+                totalRepos += len(response.json())
+                offset += reposPerRequest
+
             self.logger.info(f"Found {totalRepos} Helm repositories.")
             for repoResult in jsonResponse:
                 thisRepoDict = {}
@@ -83,11 +96,11 @@ class ArtifactHubCrawler:
                     packagesQueryURI = f"https://artifacthub.io/api/v1/packages/search?limit=60&facets=false&kind=0&repo={repoResult['name']}"
                     response = requests.get(packagesQueryURI, headers=headers)
                     chartPackages = response.json()
-                    chartPackagesInRepo = len(chartPackages['data']['packages'])
+                    chartPackagesInRepo = len(chartPackages['packages'])
                     self.logger.info(f"{currentRepo}/{totalRepos} | found {chartPackagesInRepo} packages.")
                     thisRepoDict = {"repoName": repoResult['name'], "repoOrgName": repoOrgName, "repoCrawlResultsID": currentRepo, "repoTotalPackages": chartPackagesInRepo, "repoRaw": repoResult, "repoPackages": [] }
                     currentChartPackage = 0
-                    for chartPackage in chartPackages['data']['packages']:
+                    for chartPackage in chartPackages['packages']:
                         currentChartPackage += 1
                         totalPackages +=1
                         try:
@@ -107,9 +120,9 @@ class ArtifactHubCrawler:
                 #Save this repo's packages into our main crawler dict.
                 crawlDict[currentRepo] = thisRepoDict
         except HTTPError as http_err:
-            logging.info(f'HTTP error occurred: {http_err}')
+            logging.warning(f'HTTP error occurred: {http_err}')
         except Exception as err:
-            logging.info(f'Other error occurred: {err}')
+            logging.warning(f'Other error occurred: {err}')
         with open('artifactHubCrawler.crawl.pickle', 'wb') as f:
             pickle.dump(crawlDict, f, pickle.HIGHEST_PROTOCOL)
         return crawlDict, totalRepos, totalPackages 
