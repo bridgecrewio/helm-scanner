@@ -20,7 +20,7 @@ from checkov.common.util.http_utils import get_auth_header, get_default_get_head
 TWISTCLI_FILE_NAME = 'twistcli'
 DOCKER_IMAGE_SCAN_RESULT_FILE_NAME = 'docker-image-scan-results.json'
 BC_API_URL = "https://www.bridgecrew.cloud/api/v1"
-BC_API_KEY = "b0e5278a-d2c3-5685-a9a1-5d114780526e"
+BC_API_KEY = ""
 BC_SOURCE = "helm-scanner"
 
 
@@ -31,7 +31,12 @@ class ImageScanner():
         self.cli = docker.from_env()
         docker_image_scanning_base_url = f"{BC_API_URL}/vulnerabilities/docker-images"
         self.docker_image_scanning_proxy_address=f"{docker_image_scanning_base_url}/twistcli/proxy"
-        self.download_twistcli(TWISTCLI_FILE_NAME,docker_image_scanning_base_url) 
+        self.download_twistcli(TWISTCLI_FILE_NAME,docker_image_scanning_base_url)
+        try:
+            BC_API_KEY = self.ARTIFACTHUB_TOKEN_SECRET = os.environ['BC_API_KEY']
+        except KeyError:
+            logging.warning("No env BC_API_KEY found")
+            exit()
 
     def _scan_image(self, imageList, helmRepo): 
 

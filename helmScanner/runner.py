@@ -14,6 +14,8 @@ import logging
 from helmScanner.collect import artifactHubCrawler
 from helmScanner.output import result_writer
 from helmScanner.image_scanner import imageScanner
+# Below for multithreaded option in development
+#from multiprocessing import Pool
 #from helmScanner.export import s3_uploader
 
 
@@ -137,7 +139,14 @@ def scan_files():
                         imageList.append(f"{imagename}:{tag}")
                 # get rid of the duplicates to save time
                 imageList = list(dict.fromkeys(imageList))
+##              Possible multithreaded example commented out for now                
+#                processArgs = []
+#                for imgArg in imageList:
+#                    processArgs.insert(f"({imgArg},{repoChartPathName})")
                 logging.info(f"Found images: {imageList} in chart {downloadPath}/{chartPackage['name']}")
+#                with Pool(5) as p:
+#                    p.starmap(imageScanner._scan_image, processArgs)
+
                 imageScanner._scan_image(imageList,repoChartPathName) 
                 logging.info("Done Scanning Images")
 
