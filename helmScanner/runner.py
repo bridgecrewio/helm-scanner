@@ -13,6 +13,7 @@ import logging
 
 from helmScanner.collect import artifactHubCrawler
 from helmScanner.output import result_writer
+from helmScanner.image_scanner import imageScanner
 #from helmScanner.export import s3_uploader
 
 
@@ -119,6 +120,26 @@ def scan_files():
                         logging.info(f"Error processing helm dependancies for {chartPackage['name']} at source dir: {downloadPath}/{chartPackage['name']}. Error details: {str(e, 'utf-8')}")
                 chart_deps = parse_helm_dependency_output(o)
                 logging.info(chart_deps)
+                helmout = subprocess.Popen(["helm", 'template', f"{downloadPath}/{chartPackage['name']}"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                out, err = helmout.communicate()
+                imageList = []
+                for line in out.decode('utf-8').split('\n'):
+                    if 'image:' in line:
+                        line = line.replace('"', '')
+                        line = line.replace(' ', '')
+                        img=line.split(':')
+                        imagename = img[1]
+                        # if there's no tag it means "latest"
+                        if len(img) < 3:
+                            tag = "latest"
+                        else:
+                            tag = img[2]
+                        imageList.append(f"{imagename}:{tag}")
+                # get rid of the duplicates to save time
+                imageList = list(dict.fromkeys(imageList))
+                logging.info(f"Found images: {imageList} in chart {downloadPath}/{chartPackage['name']}")
+                imageScanner._scan_image(imageList,repoChartPathName) 
+                logging.info("Done Scanning Images")
 
     #### GRAPH. INITIAL NODE AND DEPS   
                 if chart_deps:
