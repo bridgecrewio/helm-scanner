@@ -38,7 +38,7 @@ class ImageScanner():
             logging.warning("No env BC_API_KEY found")
             exit()
 
-    def _scan_image(self, imageList, helmRepo): 
+    def _scan_image(self, helmRepo, imageList): 
 
         for docker_image_id in imageList:
             try:
