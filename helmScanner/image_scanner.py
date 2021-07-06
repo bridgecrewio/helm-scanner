@@ -12,7 +12,8 @@ from datetime import datetime, timedelta
 import subprocess  # nosec
 import json
 import logging
-from multithreader import multithreadit
+from slugify import slugify
+from helmScanner.multithreader import multithreadit
 
 # Get magic from checkov to build the headers
 from checkov.common.util.dict_utils import merge_dicts
@@ -75,33 +76,7 @@ class ImageScanner():
 
         multithreadit(self._scan_image, helmRepo, imageList)
         return
-        for docker_image_id in imageList:
-            try:
-                self.img = self.cli.images.get(docker_image_id)
-            except:
-                logging.info("Not found locally so pulling...")
-                try:
-                    [image,tag]=docker_image_id.split(':')
-                    logging.info("Pulling {0}:{1}".format(image,tag))
-                    self.img = self.cli.images.pull(image,tag)
-                except:
-                    logging.info(f"Can't pull image {docker_image_id}")
-                    return
-            # Create Dockerfile.  Only required for platform reporting
-            self.hist = self.img.history()
-            self._parse_history()
-            self.cmds.reverse()
-            self._save_dockerfile()
-
-            command_args = f"./{TWISTCLI_FILE_NAME} images scan --address {self.docker_image_scanning_proxy_address} --token b0e5278a-d2c3-5685-a9a1-5d114780526e --details --output-file {DOCKER_IMAGE_SCAN_RESULT_FILE_NAME} {docker_image_id}".split()
-            logging.info("Running scan")
-            logging.info(command_args)
-            subprocess.run(command_args)  # nosec
-            logging.info(f'TwistCLI ran successfully on image {docker_image_id}')
-            with open(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME) as docker_image_scan_result_file:
-                self.parse_results(helmRepo, docker_image_id, img.id,json.load(docker_image_scan_result_file)) 
-
-
+        
     def _save_dockerfile(self,cmds):
         file = open(".BCDockerfile","w")
         for i in cmds:
@@ -144,9 +119,10 @@ class ImageScanner():
         logging.info(f'TwistCLI downloaded and has execute permission')
 
     def parse_results(self, helmRepo, docker_image_name, image_id, twistcli_scan_result):
-        headerRow = ['combined name','Image Name','Image Tag','Total', 'Critical', 'High', 'Medium','Low']  
-        filenameVulns = f"results/{image_id}.csv"
-        filenameSummary = f"results/{image_id}_summary.csv"
+        headerRow = ['Helm Repo','Image Name','Image Tag','Total', 'Critical', 'High', 'Medium','Low']
+        filebase = slugify(f"{helmRepo}-{image_id[7:]}")
+        filenameVulns = f"results/{filebase}.csv"
+        filenameSummary = f"results/{filebase}_summary.csv"
         [imageName,imageTag] = docker_image_name.split(':')
         # Create Summary
         with open(filenameSummary, 'w') as f: 
@@ -164,7 +140,7 @@ class ImageScanner():
             write.writerow(row) 
         # Create Vulns Doc (if required)  
         if twistcli_scan_result['results'][0]['vulnerabilityDistribution']['total'] > 0:
-            headerRow = ['combined name','Image Name','Image Tag','CVE ID', 'Status', 'Severity', 'Package Name','Package Version','Link','CVSS','Vector','Description','Risk Factors','Publish Date']           
+            headerRow = ['Helm Repo','Image Name','Image Tag','CVE ID', 'Status', 'Severity', 'Package Name','Package Version','Link','CVSS','Vector','Description','Risk Factors','Publish Date']           
             with open(filenameVulns, 'w') as f: 
                 write = csv.writer(f) 
                 write.writerow(headerRow) 
