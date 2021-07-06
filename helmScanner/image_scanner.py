@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 import subprocess  # nosec
 import json
 import logging
+from multithreader import multithreadit
 
 # Get magic from checkov to build the headers
 from checkov.common.util.dict_utils import merge_dicts
@@ -38,8 +39,42 @@ class ImageScanner():
             logging.warning("No env BC_API_KEY found")
             exit()
 
-    def _scan_image(self, helmRepo, imageList): 
+    def _scan_image(self, helmRepo, docker_image_id): 
 
+        docker_cli = docker.from_env()
+        try:
+            img = docker_cli.images.get(docker_image_id)
+        except:
+            logging.info("Not found locally so pulling...")
+            try:
+                [image,tag]=docker_image_id.split(':')
+                logging.info("Pulling {0}:{1}".format(image,tag))
+                img = docker_cli.images.pull(image,tag)
+            except:
+                logging.info(f"Can't pull image {docker_image_id}")
+                return
+        # Create Dockerfile.  Only required for platform reporting
+        hist = img.history()
+        cmds = self._parse_history(hist)
+        cmds.reverse()
+        self._save_dockerfile(cmds)
+
+        DOCKER_IMAGE_SCAN_RESULT_FILE_NAME = f".{img.id}.json"
+        command_args = f"./{TWISTCLI_FILE_NAME} images scan --address {self.docker_image_scanning_proxy_address} --token b0e5278a-d2c3-5685-a9a1-5d114780526e --details --output-file {DOCKER_IMAGE_SCAN_RESULT_FILE_NAME} {docker_image_id}".split()
+        logging.info("Running scan")
+        logging.info(command_args)
+        subprocess.run(command_args)  # nosec
+        logging.info(f'TwistCLI ran successfully on image {docker_image_id}')
+        # if twistcli worked our json file should be there
+        if os.path.isfile(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME):
+            with open(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME) as docker_image_scan_result_file:
+                self.parse_results(helmRepo, docker_image_id, img.id,json.load(docker_image_scan_result_file)) 
+            os.remove(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME)
+
+    def _scan_images(self, helmRepo, imageList): 
+
+        multithreadit(self._scan_image, helmRepo, imageList)
+        return
         for docker_image_id in imageList:
             try:
                 self.img = self.cli.images.get(docker_image_id)
@@ -64,35 +99,35 @@ class ImageScanner():
             subprocess.run(command_args)  # nosec
             logging.info(f'TwistCLI ran successfully on image {docker_image_id}')
             with open(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME) as docker_image_scan_result_file:
-                self.parse_results(helmRepo, docker_image_id, self.img.id,json.load(docker_image_scan_result_file)) 
+                self.parse_results(helmRepo, docker_image_id, img.id,json.load(docker_image_scan_result_file)) 
 
 
-    def _save_dockerfile(self):
+    def _save_dockerfile(self,cmds):
         file = open(".BCDockerfile","w")
-        for i in self.cmds:
+        for i in cmds:
             file.write(i)
         file.close()
 
-    def _insert_step(self, step):
-        if "#(nop)" in step:
-            to_add = step.split("#(nop) ")[1]
-        else:
-            to_add = ("RUN {}".format(step))
-        to_add = to_add.replace("&&", "\\\n    &&")
-        self.cmds.append(to_add.strip(' '))
-
-    def _parse_history(self, rec=False):
+    def _parse_history(self, hist, rec=False):
         first_tag = False
         actual_tag = False
-        for i in self.hist:
+        cmds = []
+        for i in hist:
             if i['Tags']:
                 actual_tag = i['Tags'][0]
                 if first_tag and not rec:
                     break
                 first_tag = True
-            self._insert_step(i['CreatedBy'])
+            step = i['CreatedBy']
+            if "#(nop)" in step:
+                to_add = step.split("#(nop) ")[1]
+            else:
+                to_add = ("RUN {}".format(step))
+            to_add = to_add.replace("&&", "\\\n    &&")
+            cmds.append(to_add.strip(' '))
         if not rec:
-            self.cmds.append("IMAGE {}".format(actual_tag))
+            cmds.append("IMAGE {}".format(actual_tag))
+        return cmds
 
     def download_twistcli(self, cli_file_name, docker_image_scanning_base_url):
         if os.path.exists(cli_file_name):
@@ -110,8 +145,8 @@ class ImageScanner():
 
     def parse_results(self, helmRepo, docker_image_name, image_id, twistcli_scan_result):
         headerRow = ['combined name','Image Name','Image Tag','Total', 'Critical', 'High', 'Medium','Low']  
-        filenameVulns = f"{image_id}.csv"
-        filenameSummary = f"{image_id}_summary.csv"
+        filenameVulns = f"results/{image_id}.csv"
+        filenameSummary = f"results/{image_id}_summary.csv"
         [imageName,imageTag] = docker_image_name.split(':')
         # Create Summary
         with open(filenameSummary, 'w') as f: 
