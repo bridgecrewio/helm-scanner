@@ -16,7 +16,7 @@ from slugify import slugify
 from helmScanner.multithreader import multithreadit
 
 # Get magic from checkov to build the headers
-from checkov.common.util.dict_utils import merge_dicts
+from checkov.common.util.data_structures_utils import merge_dicts
 from checkov.common.util.http_utils import get_auth_header, get_default_get_headers, get_default_post_headers
 
 TWISTCLI_FILE_NAME = 'twistcli'
