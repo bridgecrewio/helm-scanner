@@ -35,7 +35,7 @@ class ImageScanner():
         self.docker_image_scanning_proxy_address=f"{docker_image_scanning_base_url}/twistcli/proxy"
         self.download_twistcli(TWISTCLI_FILE_NAME,docker_image_scanning_base_url)
         try:
-            BC_API_KEY = self.ARTIFACTHUB_TOKEN_SECRET = os.environ['BC_API_KEY']
+            BC_API_KEY = self.BC_API_KEY = os.environ['BC_API_KEY']
         except KeyError:
             logging.warning("No env BC_API_KEY found")
             exit()
@@ -61,7 +61,7 @@ class ImageScanner():
         self._save_dockerfile(cmds)
 
         DOCKER_IMAGE_SCAN_RESULT_FILE_NAME = f".{img.id}.json"
-        command_args = f"./{TWISTCLI_FILE_NAME} images scan --address {self.docker_image_scanning_proxy_address} --token b0e5278a-d2c3-5685-a9a1-5d114780526e --details --output-file {DOCKER_IMAGE_SCAN_RESULT_FILE_NAME} {docker_image_id}".split()
+        command_args = f"./{TWISTCLI_FILE_NAME} images scan --address {self.docker_image_scanning_proxy_address} --token {self.BC_API_KEY} --details --output-file {DOCKER_IMAGE_SCAN_RESULT_FILE_NAME} {docker_image_id}".split()
         logging.info("Running scan")
         logging.info(command_args)
         subprocess.run(command_args)  # nosec
