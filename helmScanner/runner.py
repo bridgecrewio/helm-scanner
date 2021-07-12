@@ -14,7 +14,7 @@ import logging
 from helmScanner.collect import artifactHubCrawler
 from helmScanner.output import result_writer
 from helmScanner.multithreader import multithreadit
-#from helmScanner.image_scanner import imageScanner
+from helmScanner.image_scanner import imageScanner
 #from helmScanner.export import s3_uploader
 
 
@@ -161,8 +161,8 @@ def _scan_org(crawlList, orgOffset):
             imageList = list(dict.fromkeys(imageList))
             logging.info(f"Found images: {imageList} in chart {downloadPath}/{chartPackage['name']}")
 
-            #imageScanner._scan_images(repoChartPathName, imageList) 
-            #logging.info("Done Scanning Images")
+            imageScanner._scan_images(repoChartPathName, imageList) 
+            logging.info("Done Scanning Images")
             
             # Assign results_scan outside of try objects.
             results_scan = object
