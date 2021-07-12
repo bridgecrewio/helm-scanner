@@ -33,12 +33,12 @@ class ImageScanner():
         self.cli = docker.from_env()
         docker_image_scanning_base_url = f"{BC_API_URL}/vulnerabilities/docker-images"
         self.docker_image_scanning_proxy_address=f"{docker_image_scanning_base_url}/twistcli/proxy"
-        self.download_twistcli(TWISTCLI_FILE_NAME,docker_image_scanning_base_url)
         try:
             BC_API_KEY = self.BC_API_KEY = os.environ['BC_API_KEY']
         except KeyError:
             logging.warning("No env BC_API_KEY found")
             exit()
+        self.download_twistcli(TWISTCLI_FILE_NAME,docker_image_scanning_base_url)
 
     def _scan_image(self, helmRepo, docker_image_id): 
 
@@ -110,7 +110,7 @@ class ImageScanner():
         os_type = platform.system().lower()
         headers = merge_dicts(
             get_default_get_headers(BC_SOURCE, "HELM_SCANNER"),
-            get_auth_header(BC_API_KEY)
+            get_auth_header(self.BC_API_KEY)
         )
         response = requests.request('GET', f"{docker_image_scanning_base_url}/twistcli/download?os={os_type}", headers=headers)
         open(cli_file_name, 'wb').write(response.content)
@@ -119,7 +119,7 @@ class ImageScanner():
         logging.info(f'TwistCLI downloaded and has execute permission')
 
     def parse_results(self, helmRepo, docker_image_name, image_id, twistcli_scan_result):
-        headerRow = ['Helm Repo','Image Name','Image Tag','Total', 'Critical', 'High', 'Medium','Low']
+        headerRow = ['Helm Repo','Image Name','Image Tag','Image SHA','Total', 'Critical', 'High', 'Medium','Low']
         filebase = slugify(f"{helmRepo}-{image_id[7:]}")
         filenameVulns = f"results/{filebase}.csv"
         filenameSummary = f"results/{filebase}_summary.csv"
@@ -132,6 +132,7 @@ class ImageScanner():
                 helmRepo,
                 imageName,
                 imageTag,
+                image_id,
                 twistcli_scan_result['results'][0]['vulnerabilityDistribution']['total'],
                 twistcli_scan_result['results'][0]['vulnerabilityDistribution']['critical'],
                 twistcli_scan_result['results'][0]['vulnerabilityDistribution']['high'],
@@ -140,7 +141,7 @@ class ImageScanner():
             write.writerow(row) 
         # Create Vulns Doc (if required)  
         if twistcli_scan_result['results'][0]['vulnerabilityDistribution']['total'] > 0:
-            headerRow = ['Helm Repo','Image Name','Image Tag','CVE ID', 'Status', 'Severity', 'Package Name','Package Version','Link','CVSS','Vector','Description','Risk Factors','Publish Date']           
+            headerRow = ['Helm Repo','Image Name','Image Tag','Image SHA','CVE ID', 'Status', 'Severity', 'Package Name','Package Version','Link','CVSS','Vector','Description','Risk Factors','Publish Date']           
             with open(filenameVulns, 'w') as f: 
                 write = csv.writer(f) 
                 write.writerow(headerRow) 
@@ -153,6 +154,7 @@ class ImageScanner():
                         helmRepo,
                         imageName,
                         imageTag,
+                        image_id,
                         x['id'],
                         x.get('status', 'open'),
                         x['severity'],

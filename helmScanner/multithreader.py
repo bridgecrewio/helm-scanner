@@ -31,7 +31,7 @@ def multithreadit(
     func, key, list, num_of_workers = None
 ):
     if not num_of_workers:
-        num_of_workers = math.ceil(os.cpu_count() / 2)
+        num_of_workers = math.ceil(os.cpu_count() * 0.7)
         print(f"Creating {num_of_workers} workers from {os.cpu_count()}")
     if num_of_workers > 0:
         with concurrent.futures.ThreadPoolExecutor(max_workers=num_of_workers) as executor:
