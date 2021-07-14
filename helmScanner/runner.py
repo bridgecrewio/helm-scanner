@@ -6,7 +6,6 @@ import subprocess
 import wget
 import traceback
 import tarfile
-import pygraphviz as pgv
 import glob
 import re
 import logging
