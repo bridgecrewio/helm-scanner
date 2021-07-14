@@ -97,7 +97,7 @@ class ArtifactHubCrawler:
                     response = requests.get(packagesQueryURI, headers=headers)
                     chartPackages = response.json()
                     chartPackagesInRepo = len(chartPackages['packages'])
-                    self.logger.info(f"{currentRepo}/{totalRepos} | found {chartPackagesInRepo} packages.")
+                    self.logger.debug(f"{currentRepo}/{totalRepos} | found {chartPackagesInRepo} packages.")
                     thisRepoDict = {"repoName": repoResult['name'], "repoOrgName": repoOrgName, "repoCrawlResultsID": currentRepo, "repoTotalPackages": chartPackagesInRepo, "repoRaw": repoResult, "repoPackages": [] }
                     currentChartPackage = 0
                     for chartPackage in chartPackages['packages']:
@@ -107,16 +107,16 @@ class ArtifactHubCrawler:
                             # Downloads and package version details for each package.
                             response = requests.get(f"https://artifacthub.io/api/v1/packages/helm/{repoResult['name']}/{chartPackage['name']}", headers=headers)
                             chartVersionResponse = response.json()
-                            self.logger.info(f"        R: {currentRepo}/{totalRepos} | P: {currentChartPackage}/{chartPackagesInRepo} | Chart {chartPackage['name']} latest version: {chartVersionResponse['version']} URL: {chartVersionResponse['content_url']}")
+                            self.logger.debug(f"        R: {currentRepo}/{totalRepos} | P: {currentChartPackage}/{chartPackagesInRepo} | Chart {chartPackage['name']} latest version: {chartVersionResponse['version']} URL: {chartVersionResponse['content_url']}")
                             thisRepoDict['repoPackages'].append(chartVersionResponse)
                         except HTTPError as http_err:
-                           logging.info(f'HTTP error occurred: {http_err}')
+                           logging.warning(f'HTTP error occurred: {http_err}')
                         except Exception as err:
-                            logging.info(f'Other error occurred: {err}')
+                            logging.warning(f'Other error occurred: {err}')
                 except HTTPError as http_err:
-                    logging.info(f'HTTP error occurred: {http_err}')
+                    logging.warning(f'HTTP error occurred: {http_err}')
                 except Exception as err:
-                    logging.info(f'Other error occurred: {err}')
+                    logging.warning(f'Other error occurred: {err}')
                 #Save this repo's packages into our main crawler dict.
                 crawlDict[currentRepo] = thisRepoDict
         except HTTPError as http_err:

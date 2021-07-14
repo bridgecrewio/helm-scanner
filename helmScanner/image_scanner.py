@@ -14,6 +14,7 @@ import json
 import logging
 from slugify import slugify
 from helmScanner.multithreader import multithreadit
+from helmScanner.scannerTimeStamp import currentRunTimestamp
 
 # Get magic from checkov to build the headers
 from checkov.common.util.data_structures_utils import merge_dicts
@@ -121,27 +122,32 @@ class ImageScanner():
     def parse_results(self, helmRepo, docker_image_name, image_id, twistcli_scan_result):
         headerRow = ['Helm Repo','Image Name','Image Tag','Image SHA','Total', 'Critical', 'High', 'Medium','Low']
         filebase = slugify(f"{helmRepo}-{image_id[7:]}")
-        filenameVulns = f"results/{filebase}.csv"
-        filenameSummary = f"results/{filebase}_summary.csv"
+        filenameVulns = f"results/{currentRunTimestamp}/{filebase}.csv"
+        filenameSummary = f"results/{currentRunTimestamp}/{filebase}_summary.csv"
         [imageName,imageTag] = docker_image_name.split(':')
         # Create Summary
-        with open(filenameSummary, 'w') as f: 
-            write = csv.writer(f) 
-            write.writerow(headerRow) 
-            row = [
-                helmRepo,
-                imageName,
-                imageTag,
-                image_id,
-                twistcli_scan_result['results'][0]['vulnerabilityDistribution']['total'],
-                twistcli_scan_result['results'][0]['vulnerabilityDistribution']['critical'],
-                twistcli_scan_result['results'][0]['vulnerabilityDistribution']['high'],
-                twistcli_scan_result['results'][0]['vulnerabilityDistribution']['medium'],
-                twistcli_scan_result['results'][0]['vulnerabilityDistribution']['low'] ]
-            write.writerow(row) 
+        try:
+            with open(filenameSummary, 'w') as f: 
+                write = csv.writer(f) 
+                write.writerow(headerRow) 
+                row = [
+                    currentRunTimestamp,
+                    helmRepo,
+                    imageName,
+                    imageTag,
+                    image_id,
+                    twistcli_scan_result['results'][0]['vulnerabilityDistribution']['total'],
+                    twistcli_scan_result['results'][0]['vulnerabilityDistribution']['critical'],
+                    twistcli_scan_result['results'][0]['vulnerabilityDistribution']['high'],
+                    twistcli_scan_result['results'][0]['vulnerabilityDistribution']['medium'],
+                    twistcli_scan_result['results'][0]['vulnerabilityDistribution']['low'] ]
+                write.writerow(row) 
+        except Exception as e: 
+            print("***** ERROR OPENING CSV OCCURED *****")
+            print(e)
         # Create Vulns Doc (if required)  
         if twistcli_scan_result['results'][0]['vulnerabilityDistribution']['total'] > 0:
-            headerRow = ['Helm Repo','Image Name','Image Tag','Image SHA','CVE ID', 'Status', 'Severity', 'Package Name','Package Version','Link','CVSS','Vector','Description','Risk Factors','Publish Date']           
+            headerRow = ['Scan Timestamp','Helm Repo','Image Name','Image Tag','Image SHA','CVE ID', 'Status', 'Severity', 'Package Name','Package Version','Link','CVSS','Vector','Description','Risk Factors','Publish Date']           
             with open(filenameVulns, 'w') as f: 
                 write = csv.writer(f) 
                 write.writerow(headerRow) 
@@ -151,6 +157,7 @@ class ImageScanner():
                     except:
                         link = ''
                     row = [
+                        currentRunTimestamp,
                         helmRepo,
                         imageName,
                         imageTag,

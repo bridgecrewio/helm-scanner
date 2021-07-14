@@ -15,6 +15,7 @@ from helmScanner.collect import artifactHubCrawler
 from helmScanner.output import result_writer
 from helmScanner.multithreader import multithreadit
 from helmScanner.image_scanner import imageScanner
+from helmScanner.scannerTimeStamp import currentRunTimestamp
 #from helmScanner.export import s3_uploader
 
 
@@ -23,9 +24,8 @@ from checkov.helm.registry import registry
 from checkov.helm.runner import Runner as helm_runner
 #from checkov.kubernetes.runner import Runner as k8_runner
 
-
-RESULTS_PATH = f'{os.path.abspath(os.path.curdir)}/results'
-SCAN_TIME = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+SCAN_TIME = currentRunTimestamp
+RESULTS_PATH = f'{os.path.abspath(os.path.curdir)}/results/{SCAN_TIME}'
 
 #Graph no longer global, per repo.
 #depGraph=pgv.AGraph(strict=False,directed=True)
@@ -59,7 +59,7 @@ def parse_helm_dependency_output(o):
 
 def scan_files():
     crawler = artifactHubCrawler.ArtifactHubCrawler()
-    crawlDict, totalRepos, totalPackages = crawler.mockCrawl()
+    crawlDict, totalRepos, totalPackages = crawler.crawl()
     logging.info(f"Crawl completed with {totalPackages} charts from {totalRepos} repositories.")
 
     crawlList = crawlDict
@@ -124,11 +124,11 @@ def _scan_org(crawlList, orgOffset):
                         logging.info(f"Scanning {repo['repoName']}/{chartPackage['name']}| Extract Source ")
                         os.remove(filename)
                     except:
-                        logging.info(f"Failed to extract {repo['repoName']}/{chartPackage['name']}")
+                        logging.warning(f"Failed to extract {repo['repoName']}/{chartPackage['name']}")
                         extract_failures.append([f"{repo['repoName']}/{chartPackage['name']}"])
                 
             except:
-                logging.info(f"Failed to download {repo['repoName']}/{chartPackage['name']}")
+                logging.error(f"Failed to download {repo['repoName']}/{chartPackage['name']}")
                 download_failures.append([f"{repo['repoName']}/{chartPackage['name']}"])
         
 
@@ -137,11 +137,11 @@ def _scan_org(crawlList, orgOffset):
             o, e = proc.communicate()
             if e:
                 if "Warning: Dependencies" in str(e, 'utf-8'):
-                    logging.info(f"V1 API chart without Chart.yaml dependancies. Skipping chart dependancy list for {chartPackage['name']} at dir: {downloadPath}/{chartPackage['name']}. Error details: {str(e, 'utf-8')}")
+                    logging.warning(f"V1 API chart without Chart.yaml dependancies. Skipping chart dependancy list for {chartPackage['name']} at dir: {downloadPath}/{chartPackage['name']}. Error details: {str(e, 'utf-8')}")
                 else: 
-                    logging.info(f"Error processing helm dependancies for {chartPackage['name']} at source dir: {downloadPath}/{chartPackage['name']}. Error details: {str(e, 'utf-8')}")
+                    logging.warning(f"Error processing helm dependancies for {chartPackage['name']} at source dir: {downloadPath}/{chartPackage['name']}. Error details: {str(e, 'utf-8')}")
             chart_deps = parse_helm_dependency_output(o)
-            logging.info(chart_deps)
+            logging.debug(chart_deps)
             helmout = subprocess.Popen(["helm", 'template', f"{downloadPath}/{chartPackage['name']}"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = helmout.communicate()
             imageList = []
@@ -176,6 +176,7 @@ def _scan_org(crawlList, orgOffset):
                     chartNameFromResultData = re.search(chartNameFromResultDataExpression, passed_check["resource"]).group(chartNameFromResultDataExpressionGroup)
                     ## NEW. Default items if no key exists for non-critical components
                     check = [
+                        currentRunTimestamp,
                         repoChartPathName,
                         repo['repoName'],
                         chartPackage['name'],
@@ -204,6 +205,7 @@ def _scan_org(crawlList, orgOffset):
                 for failed_check in res["results"]["failed_checks"]:
                     chartNameFromResultData = re.search(chartNameFromResultDataExpression, failed_check["resource"]).group(chartNameFromResultDataExpressionGroup)
                     check = [
+                        currentRunTimestamp,
                         repoChartPathName,
                         repo['repoName'],
                         chartPackage['name'],
@@ -231,6 +233,7 @@ def _scan_org(crawlList, orgOffset):
                     result_lst.append(check)
                 if results_scan.is_empty():
                     check = [
+                        currentRunTimestamp,
                         repoChartPathName,
                         repo['repoName'],
                         chartPackage['name'],
@@ -258,10 +261,11 @@ def _scan_org(crawlList, orgOffset):
                     result_lst.append(check)
                     #empty_resources = self.module_resources()
             except Exception:
-                logging.info('unexpected error in scan')
+                logging.error('unexpected error in scan')
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 tb = traceback.format_exception(exc_type, exc_value, exc_traceback)
                 check = [
+                        currentRunTimestamp,
                         repoChartPathName,
                         repo['repoName'],
                         chartPackage['name'],
@@ -293,6 +297,7 @@ def _scan_org(crawlList, orgOffset):
                 logging.info(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Processing Summaries")
                 res = results_scan.get_dict()
                 summary_lst_item = [
+                    currentRunTimestamp,
                     repoChartPathName,
                     repo['repoName'],
                     chartPackage['name'],
@@ -309,6 +314,7 @@ def _scan_org(crawlList, orgOffset):
                 ]
             except:
                 summary_lst_item = [
+                    currentRunTimestamp,
                     repoChartPathName,
                     repo['repoName'],
                     chartPackage['name'],
@@ -332,10 +338,11 @@ def _scan_org(crawlList, orgOffset):
                 #{'common': {'chart_name': 'common', 'chart_version': '0.0.5', 'chart_repo': 'https://charts.adfinis.com', 'chart_status': 'unpacked'}}
                 if chart_deps:
                     for key in chart_deps:
-                        logging.info(f" HELMDEP FOUND! {chart_deps[key]}")
+                        logging.debug(f" HELMDEP FOUND! {chart_deps[key]}")
                         current_dep = chart_deps[key]
                         
                         dep_item = [
+                            currentRunTimestamp,
                             repoChartPathName, #Current chart combined repo/path
                             repo['repoName'],  #Current chart reponame
                             chartPackage['name'], #Current chart chartname
@@ -348,13 +355,13 @@ def _scan_org(crawlList, orgOffset):
 
                         helmdeps_lst.append(dep_item)
 
-                logging.info(f"CURRENT HELMDEPS LIST {helmdeps_lst}")
+                logging.debug(f"CURRENT HELMDEPS LIST {helmdeps_lst}")
                     
             except:
                 pass
 
-    logging.info(f"Global deps usage: {globalDepsUsage}")
-    logging.info(f"Global deps list {globalDepsList}")
+    logging.debug(f"Global deps usage: {globalDepsUsage}")
+    logging.debug(f"Global deps list {globalDepsList}")
 
     result_writer.print_csv(summary_lst, result_lst, helmdeps_lst, empty_resources, RESULTS_PATH, repo['repoName'], orgRepoFilename, globalDepsList, globalDepsUsage)
     #empty_resources_total.update(empty_resources)
