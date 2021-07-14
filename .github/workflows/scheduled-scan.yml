@@ -1,0 +1,20 @@
+name: scheduled-scan
+on:
+  schedule:
+    - cron:  '0 * 1,8,15,22,29 * *'
+jobs:
+  helm-scanner:
+    runs-on: [self-hosted, linux, X64, public-devrel]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - uses: dschep/install-pipenv-action@v1
+      - uses: azure/setup-helm@v1
+      - name: Setup helm-scanner
+        run: |
+          pipenv install
+      - name: Run helm-scanner
+        run: |
+          pipenv run python main.py
