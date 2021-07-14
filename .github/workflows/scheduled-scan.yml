@@ -19,3 +19,7 @@ jobs:
       - name: Run helm-scanner
         run: |
           pipenv run python main.py
+        env: # Or as an environment variable
+          ARTIFACTHUB_TOKEN: ${{ secrets.ARTIFACTHUB_TOKEN }}
+          ARTIFACTHUB_TOKEN_SECRET: ${{ secrets.ARTIFACTHUB_TOKEN_SECRET }}
+          BC_API_KEY: ${{ secrets.BC_API_KEY }}
