@@ -1,1 +1,4 @@
 .vscode
+artifacthub-crawler.log
+artifacthub-crawler.log.*
+*.pickle
