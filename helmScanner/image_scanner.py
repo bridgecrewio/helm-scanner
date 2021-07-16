@@ -65,7 +65,7 @@ class ImageScanner():
         command_args = f"./{TWISTCLI_FILE_NAME} images scan --address {self.docker_image_scanning_proxy_address} --token {self.BC_API_KEY} --details --output-file {DOCKER_IMAGE_SCAN_RESULT_FILE_NAME} {docker_image_id}".split()
         helmscanner_logging.info("Running scan")
         helmscanner_logging.info(command_args)
-        subprocess.run(command_args)  # nosec
+        subprocess.run(command_args, shell=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec
         helmscanner_logging.info(f'TwistCLI ran successfully on image {docker_image_id}')
         # if twistcli worked our json file should be there
         if os.path.isfile(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME):
