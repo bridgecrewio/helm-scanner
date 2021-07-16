@@ -8,7 +8,7 @@ import traceback
 import tarfile
 import glob
 import re
-import logging
+import logging as helmscanner_logging
 
 from helmScanner.collect import artifactHubCrawler
 from helmScanner.output import result_writer
@@ -19,8 +19,11 @@ from helmScanner.scannerTimeStamp import currentRunTimestamp
 
 
 # Local setup of checkov
+from checkov.logging_init import init as logging_init
 from checkov.helm.registry import registry
 from checkov.helm.runner import Runner as helm_runner
+# Checkov logging so we dont default to debug output from checkov.
+logging_init()
 #from checkov.kubernetes.runner import Runner as k8_runner
 
 SCAN_TIME = currentRunTimestamp
@@ -33,7 +36,7 @@ globalDepsList = defaultdict(list)
 emptylist = []
 
 def extract(tar_url, extract_path='.'):
-    logging.debug(tar_url)
+    helmscanner_logging.debug(tar_url)
     tar = tarfile.open(tar_url, 'r')
     for item in tar:
         tar.extract(item, extract_path)
@@ -58,8 +61,8 @@ def parse_helm_dependency_output(o):
 
 def scan_files():
     crawler = artifactHubCrawler.ArtifactHubCrawler()
-    crawlDict, totalRepos, totalPackages = crawler.crawl()
-    logging.info(f"Crawl completed with {totalPackages} charts from {totalRepos} repositories.")
+    crawlDict, totalRepos, totalPackages = crawler.mockCrawl()
+    helmscanner_logging.info(f"Crawl completed with {totalPackages} charts from {totalRepos} repositories.")
 
     crawlList = crawlDict
 
@@ -108,7 +111,7 @@ def _scan_org(crawlList, orgOffset):
         #if orgRepoFilename == "reponame":
         #    continue
         if True:
-            logging.info(f"Scanning {repo['repoName']}/{chartPackage['name']}| Download Source ")
+            helmscanner_logging.info(f"Scanning {repo['repoName']}/{chartPackage['name']}| Download Source ")
             # Setup local dir and download
             repoChartPathName = f"{repo['repoName']}/{chartPackage['name']}"
             downloadPath = f'{RESULTS_PATH}/{repoChartPathName}'
@@ -120,27 +123,27 @@ def _scan_org(crawlList, orgOffset):
                 for filename in glob.glob(f"{downloadPath}/**.tgz", recursive=False):
                     try: 
                         extract(filename, downloadPath)
-                        logging.info(f"Scanning {repo['repoName']}/{chartPackage['name']}| Extract Source ")
+                        helmscanner_logging.info(f"Scanning {repo['repoName']}/{chartPackage['name']}| Extract Source ")
                         os.remove(filename)
                     except:
-                        logging.warning(f"Failed to extract {repo['repoName']}/{chartPackage['name']}")
+                        helmscanner_logging.warning(f"Failed to extract {repo['repoName']}/{chartPackage['name']}")
                         extract_failures.append([f"{repo['repoName']}/{chartPackage['name']}"])
                 
             except:
-                logging.error(f"Failed to download {repo['repoName']}/{chartPackage['name']}")
+                helmscanner_logging.error(f"Failed to download {repo['repoName']}/{chartPackage['name']}")
                 download_failures.append([f"{repo['repoName']}/{chartPackage['name']}"])
         
 
-            logging.info(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Processing Chart Deps")
+            helmscanner_logging.info(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Processing Chart Deps")
             proc = subprocess.Popen(["helm", 'dependency', 'list' , f"{downloadPath}/{chartPackage['name']}"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             o, e = proc.communicate()
             if e:
                 if "Warning: Dependencies" in str(e, 'utf-8'):
-                    logging.warning(f"V1 API chart without Chart.yaml dependancies. Skipping chart dependancy list for {chartPackage['name']} at dir: {downloadPath}/{chartPackage['name']}. Error details: {str(e, 'utf-8')}")
+                    helmscanner_logging.warning(f"V1 API chart without Chart.yaml dependancies. Skipping chart dependancy list for {chartPackage['name']} at dir: {downloadPath}/{chartPackage['name']}. Error details: {str(e, 'utf-8')}")
                 else: 
-                    logging.warning(f"Error processing helm dependancies for {chartPackage['name']} at source dir: {downloadPath}/{chartPackage['name']}. Error details: {str(e, 'utf-8')}")
+                    helmscanner_logging.warning(f"Error processing helm dependancies for {chartPackage['name']} at source dir: {downloadPath}/{chartPackage['name']}. Error details: {str(e, 'utf-8')}")
             chart_deps = parse_helm_dependency_output(o)
-            logging.debug(chart_deps)
+            helmscanner_logging.debug(chart_deps)
             helmout = subprocess.Popen(["helm", 'template', f"{downloadPath}/{chartPackage['name']}"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = helmout.communicate()
             imageList = []
@@ -158,19 +161,19 @@ def _scan_org(crawlList, orgOffset):
                     imageList.append(f"{imagename}:{tag}")
             # get rid of the duplicates to save time
             imageList = list(dict.fromkeys(imageList))
-            logging.info(f"Found images: {imageList} in chart {downloadPath}/{chartPackage['name']}")
+            helmscanner_logging.info(f"Found images: {imageList} in chart {downloadPath}/{chartPackage['name']}")
 
             imageScanner._scan_images(repoChartPathName, imageList) 
-            logging.info("Done Scanning Images")
+            helmscanner_logging.info("Done Scanning Images")
             
             # Assign results_scan outside of try objects.
             results_scan = object
             try:
-                logging.info(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Running Checkov")
+                helmscanner_logging.info(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Running Checkov")
                 runner = helm_runner()
                 results_scan = runner.run(root_folder=downloadPath, external_checks_dir=None, files=None)
                 res = results_scan.get_dict()
-                logging.info(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Processing Results")
+                helmscanner_logging.info(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Processing Results")
                 for passed_check in res["results"]["passed_checks"]:
                     chartNameFromResultData = re.search(chartNameFromResultDataExpression, passed_check["resource"]).group(chartNameFromResultDataExpressionGroup)
                     ## NEW. Default items if no key exists for non-critical components
@@ -260,7 +263,7 @@ def _scan_org(crawlList, orgOffset):
                     result_lst.append(check)
                     #empty_resources = self.module_resources()
             except Exception:
-                logging.error('unexpected error in scan')
+                helmscanner_logging.error('unexpected error in scan')
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 tb = traceback.format_exception(exc_type, exc_value, exc_traceback)
                 check = [
@@ -293,7 +296,7 @@ def _scan_org(crawlList, orgOffset):
 
             # Summary Results
             try:
-                logging.info(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Processing Summaries")
+                helmscanner_logging.info(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Processing Summaries")
                 res = results_scan.get_dict()
                 summary_lst_item = [
                     currentRunTimestamp,
@@ -333,11 +336,11 @@ def _scan_org(crawlList, orgOffset):
             # Helm Dependancies
             try:
                 res = results_scan.get_dict()
-                logging.info(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Processing Helm Dependancies")
+                helmscanner_logging.info(f"SCAN OF {repo['repoName']}/{chartPackage['name']} | Processing Helm Dependancies")
                 #{'common': {'chart_name': 'common', 'chart_version': '0.0.5', 'chart_repo': 'https://charts.adfinis.com', 'chart_status': 'unpacked'}}
                 if chart_deps:
                     for key in chart_deps:
-                        logging.debug(f" HELMDEP FOUND! {chart_deps[key]}")
+                        helmscanner_logging.debug(f" HELMDEP FOUND! {chart_deps[key]}")
                         current_dep = chart_deps[key]
                         
                         dep_item = [
@@ -354,13 +357,13 @@ def _scan_org(crawlList, orgOffset):
 
                         helmdeps_lst.append(dep_item)
 
-                logging.debug(f"CURRENT HELMDEPS LIST {helmdeps_lst}")
+                helmscanner_logging.debug(f"CURRENT HELMDEPS LIST {helmdeps_lst}")
                     
             except:
                 pass
 
-    logging.debug(f"Global deps usage: {globalDepsUsage}")
-    logging.debug(f"Global deps list {globalDepsList}")
+    helmscanner_logging.debug(f"Global deps usage: {globalDepsUsage}")
+    helmscanner_logging.debug(f"Global deps list {globalDepsList}")
 
     result_writer.print_csv(summary_lst, result_lst, helmdeps_lst, empty_resources, RESULTS_PATH, repo['repoName'], orgRepoFilename, globalDepsList, globalDepsUsage)
     #empty_resources_total.update(empty_resources)
