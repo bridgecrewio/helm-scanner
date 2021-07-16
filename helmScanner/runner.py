@@ -12,6 +12,7 @@ import logging as helmscanner_logging
 
 from helmScanner.collect import artifactHubCrawler
 from helmScanner.output import result_writer
+from helmScanner.output import s3_uploader
 from helmScanner.multithreader import multithreadit
 from helmScanner.image_scanner import imageScanner
 from helmScanner.scannerTimeStamp import currentRunTimestamp
@@ -81,6 +82,7 @@ def scan_files():
     #for repoCount in crawlDict:
         # Call Threaded Function to scan an org.
         #repoChartPackages = crawlDict[repoCount]['repoPackages']
+    
     
 
 def check_category(check_id):
@@ -371,6 +373,6 @@ def _scan_org(crawlList, orgOffset):
 def run():
     scan_files()
     
-    #if os.environ.get('RESULT_BUCKET'):
-    #    logging.info(f'Uploading results to {os.environ["RESULT_BUCKET"]}')
-    #    s3_uploader.upload_results(RESULTS_PATH, SCAN_TIME)
+    if os.environ.get('RESULT_BUCKET'):
+        helmscanner_logging.info(f'Uploading results to {os.environ["RESULT_BUCKET"]}')
+        s3_uploader.upload_results(RESULTS_PATH, SCAN_TIME)
