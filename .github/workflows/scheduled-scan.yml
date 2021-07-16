@@ -1,7 +1,5 @@
 name: scheduled-scan
 on:
-  schedule:
-    - cron:  '0 * 1,8,15,22,29 * *'
   workflow_dispatch:
 jobs:
   helm-scanner:
