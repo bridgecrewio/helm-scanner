@@ -62,7 +62,7 @@ def parse_helm_dependency_output(o):
 
 def scan_files():
     crawler = artifactHubCrawler.ArtifactHubCrawler()
-    crawlDict, totalRepos, totalPackages = crawler.mockCrawl()
+    crawlDict, totalRepos, totalPackages = crawler.crawl()
     helmscanner_logging.info(f"Crawl completed with {totalPackages} charts from {totalRepos} repositories.")
 
     crawlList = crawlDict
