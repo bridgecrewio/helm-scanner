@@ -61,6 +61,9 @@ def parse_helm_dependency_output(o):
     return chart_dependencies
 
 def scan_files():
+    if not os.environ.get('RESULT_BUCKET'):
+        helmscanner_logging.error("No upload destination set as RESULT_BUCKET env. Quitting.")
+        exit()
     crawler = artifactHubCrawler.ArtifactHubCrawler()
     crawlDict, totalRepos, totalPackages = crawler.crawl()
     helmscanner_logging.info(f"Crawl completed with {totalPackages} charts from {totalRepos} repositories.")
@@ -75,9 +78,7 @@ def scan_files():
 
      # Call Threaded Function to scan an org.
     #repoChartPackages = crawlDict[repoCount]['repoPackages']
-    print(len(crawlList))
-    org = crawlList[551]
-    print(org)
+    helmscanner_logging.info(len(crawlList))
     multithreadit(_scan_org, crawlList, crawlList)
     #for repoCount in crawlDict:
         # Call Threaded Function to scan an org.
