@@ -21,3 +21,6 @@ jobs:
           ARTIFACTHUB_TOKEN: ${{ secrets.ARTIFACTHUB_TOKEN }}
           ARTIFACTHUB_TOKEN_SECRET: ${{ secrets.ARTIFACTHUB_TOKEN_SECRET }}
           BC_API_KEY: ${{ secrets.BC_API_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          RESULT_BUCKET: ${{ secrets.RESULT_BUCKET }}
