@@ -19,5 +19,5 @@ def upload_results_to_s3(results_path, scan_time, partialUpload):
                 os.rename(filename, filename.uploaded)
 
 
-def upload_results(results_path, scan_time):
-    upload_results_to_s3(results_path, scan_time)
+def upload_results(results_path, scan_time, partialUpload):
+    upload_results_to_s3(results_path, scan_time, partialUpload)
