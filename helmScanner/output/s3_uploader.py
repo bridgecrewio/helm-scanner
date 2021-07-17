@@ -17,7 +17,7 @@ def upload_results_to_s3(results_path, scan_time, partialUpload):
               helmscanner_logging.info(f'Uploaded {filename}')
               if partialUpload:
                 helmscanner_logging.info(f'Partial upload selected, renaming {filename} to {filename}.uploaded')
-                os.rename(filename, filename.uploaded)
+                os.rename(filename, f"{filename}.uploaded")
             except Exception as e:
               helmscanner_logging.error(f'Failed to upload via boto3. Error was: {e}')
 
