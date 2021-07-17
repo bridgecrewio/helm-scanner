@@ -60,18 +60,21 @@ class ImageScanner():
         cmds = self._parse_history(hist)
         cmds.reverse()
         self._save_dockerfile(cmds)
+        try:
+            DOCKER_IMAGE_SCAN_RESULT_FILE_NAME = f".{img.id}.json"
+            command_args = f"./{TWISTCLI_FILE_NAME} images scan --address {self.docker_image_scanning_proxy_address} --token {self.BC_API_KEY} --details --output-file {DOCKER_IMAGE_SCAN_RESULT_FILE_NAME} {docker_image_id}".split()
+            helmscanner_logging.info("Running scan")
+            helmscanner_logging.info(command_args)
+            subprocess.run(command_args, shell=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec
+            helmscanner_logging.info(f'TwistCLI ran successfully on image {docker_image_id}')
+            # if twistcli worked our json file should be there
+            if os.path.isfile(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME):
+                with open(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME) as docker_image_scan_result_file:
+                    self.parse_results(helmRepo, docker_image_id, img.id,json.load(docker_image_scan_result_file)) 
+                os.remove(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME)
+        except Exception as e:
+            helmscanner_logging.error(f"Error running twistcli scan. Exception is {e}")
 
-        DOCKER_IMAGE_SCAN_RESULT_FILE_NAME = f".{img.id}.json"
-        command_args = f"./{TWISTCLI_FILE_NAME} images scan --address {self.docker_image_scanning_proxy_address} --token {self.BC_API_KEY} --details --output-file {DOCKER_IMAGE_SCAN_RESULT_FILE_NAME} {docker_image_id}".split()
-        helmscanner_logging.info("Running scan")
-        helmscanner_logging.info(command_args)
-        subprocess.run(command_args, shell=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)  # nosec
-        helmscanner_logging.info(f'TwistCLI ran successfully on image {docker_image_id}')
-        # if twistcli worked our json file should be there
-        if os.path.isfile(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME):
-            with open(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME) as docker_image_scan_result_file:
-                self.parse_results(helmRepo, docker_image_id, img.id,json.load(docker_image_scan_result_file)) 
-            os.remove(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME)
 
     def _scan_images(self, helmRepo, imageList): 
 

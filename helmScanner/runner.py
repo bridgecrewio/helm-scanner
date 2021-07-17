@@ -368,11 +368,15 @@ def _scan_org(crawlList, orgOffset):
     helmscanner_logging.debug(f"Global deps list {globalDepsList}")
 
     result_writer.print_csv(summary_lst, result_lst, helmdeps_lst, empty_resources, RESULTS_PATH, repo['repoName'], orgRepoFilename, globalDepsList, globalDepsUsage)
-    #empty_resources_total.update(empty_resources)
+    #Upload and rename per org, rather than waiting till the end of the run.
+    uploadResultsPartial()
+
+def uploadResultsPartial():
+    if os.environ.get('RESULT_BUCKET'):
+        helmscanner_logging.info(f'Uploading results to {os.environ["RESULT_BUCKET"]}')
+        s3_uploader.upload_results(RESULTS_PATH, SCAN_TIME, True)
 
 def run():
     scan_files()
     
-    if os.environ.get('RESULT_BUCKET'):
-        helmscanner_logging.info(f'Uploading results to {os.environ["RESULT_BUCKET"]}')
-        s3_uploader.upload_results(RESULTS_PATH, SCAN_TIME)
+
