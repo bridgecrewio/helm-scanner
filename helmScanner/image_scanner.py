@@ -59,7 +59,7 @@ class ImageScanner():
         hist = img.history()
         cmds = self._parse_history(hist)
         cmds.reverse()
-        self._save_dockerfile(cmds)
+        self._save_dockerfile(cmds, img)
         try:
             DOCKER_IMAGE_SCAN_RESULT_FILE_NAME = f".{img.id}.json"
             command_args = f"./{TWISTCLI_FILE_NAME} images scan --address {self.docker_image_scanning_proxy_address} --token {self.BC_API_KEY} --details --output-file {DOCKER_IMAGE_SCAN_RESULT_FILE_NAME} {docker_image_id}".split()
@@ -81,8 +81,8 @@ class ImageScanner():
         multithreadit(self._scan_image, helmRepo, imageList)
         return
         
-    def _save_dockerfile(self,cmds):
-        file = open(f"{self.img.id}.BCDockerfile","w")
+    def _save_dockerfile(self,cmds, img):
+        file = open(f"results/{currentRunTimestamp}/dockerfiles/{img.id}.Dockerfile","w")
         for i in cmds:
             file.write(i)
         file.close()
