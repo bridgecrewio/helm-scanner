@@ -1,5 +1,6 @@
 import datetime
 import os
+import errno
 import sys
 from collections import defaultdict
 import subprocess
@@ -75,6 +76,15 @@ def scan_files():
     all_resources = []
     empty_resources_total = {}
     all_dataobj = []
+
+    for directories in ['checks', 'summaries', 'deps', 'containers', 'container_summaries', 'dockerfiles']:
+        filename = f"results/{currentRunTimestamp}/{directories}/blah.tmp"
+        if not os.path.exists(os.path.dirname(filename)):
+            try:
+                os.makedirs(os.path.dirname(filename))
+            except OSError as exc: # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
 
      # Call Threaded Function to scan an org.
     #repoChartPackages = crawlDict[repoCount]['repoPackages']
