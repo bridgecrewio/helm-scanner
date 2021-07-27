@@ -59,7 +59,7 @@ class ImageScanner():
         hist = img.history()
         cmds = self._parse_history(hist)
         cmds.reverse()
-        self._save_dockerfile(cmds)
+        self._save_dockerfile(cmds, img)
         try:
             DOCKER_IMAGE_SCAN_RESULT_FILE_NAME = f".{img.id}.json"
             command_args = f"./{TWISTCLI_FILE_NAME} images scan --address {self.docker_image_scanning_proxy_address} --token {self.BC_API_KEY} --details --output-file {DOCKER_IMAGE_SCAN_RESULT_FILE_NAME} {docker_image_id}".split()
@@ -81,8 +81,8 @@ class ImageScanner():
         multithreadit(self._scan_image, helmRepo, imageList)
         return
         
-    def _save_dockerfile(self,cmds):
-        file = open(".BCDockerfile","w")
+    def _save_dockerfile(self,cmds, img):
+        file = open(f"results/{currentRunTimestamp}/dockerfiles/{img.id}.Dockerfile","w")
         for i in cmds:
             file.write(i)
         file.close()
@@ -123,10 +123,10 @@ class ImageScanner():
         helmscanner_logging.info(f'TwistCLI downloaded and has execute permission')
 
     def parse_results(self, helmRepo, docker_image_name, image_id, twistcli_scan_result):
-        headerRow = ['Helm Repo','Image Name','Image Tag','Image SHA','Total', 'Critical', 'High', 'Medium','Low']
+        headerRow = ['Scan Timestamp','Helm Repo','Image Name','Image Tag','Image SHA','Total', 'Critical', 'High', 'Medium','Low']
         filebase = slugify(f"{helmRepo}-{image_id[7:]}")
-        filenameVulns = f"results/{currentRunTimestamp}/{filebase}.csv"
-        filenameSummary = f"results/{currentRunTimestamp}/{filebase}_summary.csv"
+        filenameVulns = f"results/{currentRunTimestamp}/containers/{filebase}.csv"
+        filenameSummary = f"results/{currentRunTimestamp}/container_summaries/{filebase}_summary.csv"
         [imageName,imageTag] = docker_image_name.split(':')
         # Create Summary
         try:
