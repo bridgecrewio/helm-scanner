@@ -82,7 +82,7 @@ class ImageScanner():
         return
         
     def _save_dockerfile(self,cmds):
-        file = open(".BCDockerfile","w")
+        file = open(f"{self.img.id}.BCDockerfile","w")
         for i in cmds:
             file.write(i)
         file.close()
@@ -123,10 +123,10 @@ class ImageScanner():
         helmscanner_logging.info(f'TwistCLI downloaded and has execute permission')
 
     def parse_results(self, helmRepo, docker_image_name, image_id, twistcli_scan_result):
-        headerRow = ['Helm Repo','Image Name','Image Tag','Image SHA','Total', 'Critical', 'High', 'Medium','Low']
+        headerRow = ['Scan Timestamp','Helm Repo','Image Name','Image Tag','Image SHA','Total', 'Critical', 'High', 'Medium','Low']
         filebase = slugify(f"{helmRepo}-{image_id[7:]}")
-        filenameVulns = f"results/{currentRunTimestamp}/{filebase}.csv"
-        filenameSummary = f"results/{currentRunTimestamp}/{filebase}_summary.csv"
+        filenameVulns = f"results/{currentRunTimestamp}/containers/{filebase}.csv"
+        filenameSummary = f"results/{currentRunTimestamp}/container_summaries/{filebase}_summary.csv"
         [imageName,imageTag] = docker_image_name.split(':')
         # Create Summary
         try:
