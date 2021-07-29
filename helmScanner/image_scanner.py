@@ -40,6 +40,8 @@ class ImageScanner():
             helmscanner_logging.warning("No env BC_API_KEY found")
             exit()
         self.download_twistcli(TWISTCLI_FILE_NAME,docker_image_scanning_base_url)
+        pruned = self.cli.images.prune()
+        helmscanner_logging.info(f"Pruned images: {pruned}")
 
     def _scan_image(self, helmRepo, docker_image_id): 
 
@@ -72,6 +74,7 @@ class ImageScanner():
                 with open(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME) as docker_image_scan_result_file:
                     self.parse_results(helmRepo, docker_image_id, img.id,json.load(docker_image_scan_result_file)) 
                 os.remove(DOCKER_IMAGE_SCAN_RESULT_FILE_NAME)
+            docker_cli.images.remove(docker_image_id)
         except Exception as e:
             helmscanner_logging.error(f"Error running twistcli scan. Exception is {e}")
 
