@@ -9,7 +9,7 @@ You can find the written based on the data generated here, once the articles are
 
  - [Part 1](https://bridgecrew.io/blog/open-source-helm-security-research/)
  - [Part 2](https://bridgecrew.io/blog/open-source-helm-security-research-part-2/)
- - Part 3 (not yet live)
+ - [Part 3](https://bridgecrew.io/blog/open-source-helm-security-research-part-3/)
 
 ## What is it?
 This is a work-in-progress codebase designed to automate discovering, templating, security scanning, then recording and providing easy access to the results for publically available Helm charts.
