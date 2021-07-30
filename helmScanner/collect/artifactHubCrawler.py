@@ -63,18 +63,20 @@ class ArtifactHubCrawler:
         crawlDict = {}
         totalPackages = 0
         reposPerRequest = 60
+        start_record = os.environ.get('START_RECORD',default=0)
+        max_records = os.environ.get('MAX_RECORDS',default=250)
         helmscanner_logging.info("Artifacthub Helm crawler started.")
         try:
             currentRepo = 0
             headers = {'X-API-KEY-ID': self.ARTIFACTHUB_TOKEN, 'X-API-KEY-SECRET': self.ARTIFACTHUB_TOKEN_SECRET}
             helmscanner_logging.info("Receiving latest ArtifactHub repo results.")
-            response = requests.get(f"https://artifacthub.io/api/v1/repositories/search?offset=0&limit={reposPerRequest}&kind=0", headers=headers)
+            response = requests.get(f"https://artifacthub.io/api/v1/repositories/search?offset={start_record}&limit={reposPerRequest}&kind=0", headers=headers)
             response.raise_for_status()
-            maxRepos = int(response.headers["pagination-total-count"])
+            maxRepos = int(response.headers["pagination-total-count"]) if max_records > int(response.headers["pagination-total-count"]) else max_records
             self.logger.info(f"Found max repos {maxRepos}")
             jsonResponse = response.json()
             totalRepos = len(jsonResponse)
-            offset = reposPerRequest
+            offset = start_record + reposPerRequest
             while (maxRepos > totalRepos):
                 # Get the rest of the repos
                 response = requests.get(f"https://artifacthub.io/api/v1/repositories/search?offset={offset}&limit={reposPerRequest}&kind=0", headers=headers)
