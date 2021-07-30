@@ -5,12 +5,6 @@ jobs:
   helm-scanner:
     runs-on: [self-hosted, linux, X64, public-devrel]
     steps:
-      - name: Clean workspace on self-hosted runners
-        run: |
-          echo "Cleaning up previous run: GHA workspace dir."
-          rm -rfv "${{ github.workspace }}"
-          echo "Cleaning up previous run: Docker local images."
-          docker rmi -f $(docker images -a -q)
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
@@ -32,3 +26,9 @@ jobs:
           RESULT_BUCKET: ${{ secrets.RESULT_BUCKET }}
           WORKSPACE: ${{ github.workspace }}
           CLEANUP: "YES"
+      - name: Clean workspace on self-hosted runners
+        run: |
+          echo "Cleaning up previous run: GHA workspace dir."
+          rm -rfv "${{ github.workspace }}"
+          echo "Cleaning up previous run: Docker local images."
+          docker rmi -f $(docker images -a -q)
