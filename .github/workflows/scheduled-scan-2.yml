@@ -1,4 +1,4 @@
-name: scheduled-scan
+name: scheduled-scan-2
 on:
   workflow_dispatch:
 jobs:
