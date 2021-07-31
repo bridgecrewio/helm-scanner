@@ -29,6 +29,7 @@ jobs:
       - name: Clean workspace on self-hosted runners
         run: |
           echo "Cleaning up previous run: GHA workspace dir."
-          rm -rfv "${{ github.workspace }}"
+          rm -rfv artifact*
+          rm -rfv results
           echo "Cleaning up previous run: Docker local images."
           docker rmi -f $(docker images -a -q)
