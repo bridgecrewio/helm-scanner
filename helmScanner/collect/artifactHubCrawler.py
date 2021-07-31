@@ -63,8 +63,8 @@ class ArtifactHubCrawler:
         crawlDict = {}
         totalPackages = 0
         reposPerRequest = 60
-        start_record = os.environ.get('START_RECORD',default=0)
-        max_records = os.environ.get('MAX_RECORDS',default=250)
+        start_record = int(os.environ.get('START_RECORD',default=0))
+        max_records = int(os.environ.get('MAX_RECORDS',default=300))
         helmscanner_logging.info("Artifacthub Helm crawler started.")
         try:
             currentRepo = 0
