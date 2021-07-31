@@ -1,0 +1,37 @@
+name: scheduled-scan
+on:
+  workflow_dispatch:
+jobs:
+  helm-scanner:
+    runs-on: [self-hosted, linux, X64, public-devrel]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - uses: dschep/install-pipenv-action@v1
+      - uses: azure/setup-helm@v1
+      - name: Setup helm-scanner
+        run: |
+          pipenv install
+      - name: Run helm-scanner
+        run: |
+          pipenv run python main.py
+        env: # Or as an environment variable
+          ARTIFACTHUB_TOKEN: ${{ secrets.ARTIFACTHUB_TOKEN }}
+          ARTIFACTHUB_TOKEN_SECRET: ${{ secrets.ARTIFACTHUB_TOKEN_SECRET }}
+          BC_API_KEY: ${{ secrets.BC_API_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          RESULT_BUCKET: ${{ secrets.RESULT_BUCKET }}
+          WORKSPACE: ${{ github.workspace }}
+          CLEANUP: "YES"
+          START_RECORD: 301
+          MAX_RECORDS: 300
+      - name: Clean workspace on self-hosted runners
+        run: |
+          echo "Cleaning up previous run: GHA workspace dir."
+          rm -rfv artifact*
+          rm -rfv results
+          echo "Cleaning up previous run: Docker local images."
+          docker rmi -f $(docker images -a -q)
