@@ -76,6 +76,8 @@ class ArtifactHubCrawler:
             self.logger.info(f"Found max repos {maxRepos}")
             jsonResponse = response.json()
             totalRepos = len(jsonResponse)
+            # readjust maxRepos in the case we have a short list of responses returned
+            maxRepos = totalRepos if maxRepos > totalRepos else maxRepos          
             offset = start_record + reposPerRequest
             while (maxRepos > totalRepos):
                 # Get the rest of the repos
