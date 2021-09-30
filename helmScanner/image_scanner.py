@@ -149,11 +149,11 @@ class ImageScanner():
                     twistcli_scan_result['results'][0]['vulnerabilityDistribution']['low'] ]
                 write.writerow(row) 
         except Exception as e: 
-            print("***** ERROR OPENING CSV OCCURED *****")
+            helmscanner_logging.info("*****IMAGE SCANNING - ERROR OPENING CSV OCCURED *****")
             print(e)
-        # Create Vulns Doc (if required)  
+        # Create Vulns Doc (if required)
         if twistcli_scan_result['results'][0]['vulnerabilityDistribution']['total'] > 0:
-            headerRow = ['Scan Timestamp','Helm Repo','Image Name','Image Tag','Image SHA','CVE ID', 'Status', 'Severity', 'Package Name','Package Version','Link','CVSS','Vector','Description','Risk Factors','Publish Date']           
+            headerRow = ['Scan Timestamp','Helm Repo','Image Name','Image Tag','Image SHA','CVE ID', 'Status', 'Severity', 'Package Name','Package Version','Link','CVSS','Vector','Description','Risk Factors','Publish Date','Is Remote Execution','Is Recent Vulnerability','CVE Has Fix']           
             with open(filenameVulns, 'w') as f: 
                 write = csv.writer(f) 
                 write.writerow(headerRow) 
@@ -162,6 +162,35 @@ class ImageScanner():
                         link = x['link']
                     except:
                         link = ''
+                    riskFactorRemoteExecution = 0
+                    riskFactorHasFix = 0 
+                    riskFactorRecentVuln = 0 
+                    if "remote execution" in x.get('riskFactors'):
+                        riskFactorRemoteExecution = 1
+                    if "Recent vulnerability" in x.get('riskFactors'):
+                        riskFactorRecentVuln = 1
+                    if "has fix" in x.get('riskFactors'):
+                        riskFactorHasFix = 1
+
+                    # We already have this data elsewhere in the CSV row.
+                    # riskFactorsAttackVector = list(filter(lambda x: x.startswith("Attack vector:"), x.get('riskFactors')))
+                    # if len(riskFactorsAttackVector) > 0:
+                    #     riskFactorsAttackVector = riskFactorsAttackVector[0].split(":")[1]
+                    # else:
+                    #     riskFactorsAttackVector = "unknown"
+
+                    # riskFactorSeverity = list(filter(lambda x: x.contains("severity"), x.get('riskFactors')))
+                    # if riskFactorSeverity.startswith("High"):
+                    #     riskFactorSeverity = "High"
+                    # if riskFactorSeverity.startswith("Medium"):
+                    #     riskFactorSeverity = "Medium"
+                    # if riskFactorSeverity.startswith("Low"):
+                    #     riskFactorSeverity = "Low"
+                    # else:
+                    #     riskFactorSeverity = "unknown"
+                        
+
+                
                     row = [
                         currentRunTimestamp,
                         helmRepo,
@@ -178,7 +207,10 @@ class ImageScanner():
                         x.get('vector'),
                         x.get('description'),
                         x.get('riskFactors'),
-                        (datetime.now() - timedelta(days=x.get('publishedDays', 0))).isoformat() ]
+                        (datetime.now() - timedelta(days=x.get('publishedDays', 0))).isoformat(),
+                        riskFactorRemoteExecution,
+                        riskFactorRecentVuln,
+                        riskFactorHasFix ] 
                     write.writerow(row) 
 
 
