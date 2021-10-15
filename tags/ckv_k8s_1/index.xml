@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>CKV_K8S_1 on helm-scanner</title>
-    <link>https://bridgecrewio.github.io/helm-scanner/tags/ckv_k8s_1/</link>
+    <link>https://metahertz.github.io/helm-scanner/tags/ckv_k8s_1/</link>
     <description>Recent content in CKV_K8S_1 on helm-scanner</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-        <atom:link href="https://bridgecrewio.github.io/helm-scanner/tags/ckv_k8s_1/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://metahertz.github.io/helm-scanner/tags/ckv_k8s_1/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
