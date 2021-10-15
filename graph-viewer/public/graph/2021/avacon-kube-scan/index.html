@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>avacon-kube-scan</title>
+  <meta name="author" content="Matt Johnson" />
+
+  
+
+  
+  <meta name="description" content="View blast-radius graphs for public artifacthub.io HELM charts">	
+  
+
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://bridgecrewio.github.io/helm-scanner/css/bundle/bundle.min.css" type="text/css">
+
+  
+  <link rel="shortcut icon" href="https://bridgecrewio.github.io/helm-scanner/img/favicon.ico" type="image/x-icon" />
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bridgecrewio.github.io/helm-scanner/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://bridgecrewio.github.io/helm-scanner/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://bridgecrewio.github.io/helm-scanner/img/favicon-16x16.png">
+  <link rel="manifest" href="https://bridgecrewio.github.io/helm-scanner/img/site.webmanifest">
+  <link rel="mask-icon" href="https://bridgecrewio.github.io/helm-scanner/img/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="alternate" href="https://bridgecrewio.github.io/index.xml" type="application/rss+xml" title="helm-scanner">
+
+  
+  <meta property="og:title" content="avacon-kube-scan" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bridgecrewio.github.io/helm-scanner/graph/2021/avacon-kube-scan//" />
+  <meta property="og:image" content="" />
+
+</head>
+
+
+<body>
+
+    <div id="all">
+
+        <header>
+
+            <div>
+
+    <div class="navbar navbar-default yamm" role="navigation" id="navbar">
+
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand home" href="https://bridgecrewio.github.io/helm-scanner/">
+                    <img src="https://bridgecrewio.github.io/helm-scanner/img/bridgecrew.png" alt="avacon-kube-scan logo">
+                    <span class="sr-only">avacon-kube-scan - go to HELM listings</span>
+                </a>
+                <div class="navbar-buttons">
+                    <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse" data-target="#navigation">
+                      <span class="sr-only">Toggle Navigation</span>
+                        <i class="fa fa-align-justify"></i>
+                    </button>
+                </div>
+            </div>
+            
+
+            <div class="navbar-collapse collapse" id="navigation">
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  <li class="dropdown">
+                    
+                    <a href="/helm-scanner/search/"><i class='fas fa-search'></i> search</a>
+                    
+                  </li>
+                  
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    
+
+</div>
+
+
+
+
+        </header>
+
+        <div id="heading-breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>avacon-kube-scan</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div id="content">
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-12" id="graph-post">
+
+                                        
+
+                        <div id="post-content">
+                            
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    
+      <meta charset="utf-8">
+      <title>Bokeh Plot</title>
+      
+      
+        
+          
+        
+        
+          
+        <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.3.min.js" integrity="sha384-dM3QQsP+wXdHg42wTqW85BjZQdLNNIXqlPw/BgKoExPmTG7ZLML4EGqLMfqHT6ON" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            Bokeh.set_log_level("info");
+        </script>
+        
+      
+      
+    
+  </head>
+  
+  
+  <body>
+    
+      
+        
+          
+          
+            
+              <div class="bk-root" id="1b7f37f3-8cc4-4956-bae9-507c8147f0f4" data-root-id="49602"></div>
+            
+          
+        
+      
+      
+        <script type="application/json" id="49925">
+          {"01ebf9c9-b1cb-4188-ac9f-0a9e134b3d03":{"defs":[],"roots":{"references":[{"attributes":{"active_multi":null,"tools":[{"id":"49621"},{"id":"49622"},{"id":"49623"},{"id":"49624"},{"id":"49625"},{"id":"49626"},{"id":"49635"},{"id":"49636"},{"id":"49637"}]},"id":"49628","type":"Toolbar"},{"attributes":{},"id":"49684","type":"AllLabels"},{"attributes":{},"id":"49618","type":"BasicTicker"},{"attributes":{},"id":"49614","type":"BasicTicker"},{"attributes":{},"id":"49689","type":"BasicTickFormatter"},{"attributes":{},"id":"49686","type":"BasicTickFormatter"},{"attributes":{"axis":{"id":"49613"},"ticker":null},"id":"49616","type":"Grid"},{"attributes":{"background_fill_color":{"value":"white"},"source":{"id":"49643"},"text":{"field":"name"},"x":{"field":"x"},"y":{"field":"y"}},"id":"49681","type":"LabelSet"},{"attributes":{},"id":"49702","type":"UnionRenderers"},{"attributes":{},"id":"49687","type":"AllLabels"},{"attributes":{"text":"avacon-kube-scan"},"id":"49603","type":"Title"},{"attributes":{},"id":"49703","type":"Selection"},{"attributes":{"bottom_units":"screen","fill_alpha":0.5,"fill_color":"lightgrey","left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"49701","type":"BoxAnnotation"},{"attributes":{"formatter":{"id":"49686"},"major_label_policy":{"id":"49684"},"ticker":{"id":"49614"}},"id":"49613","type":"LinearAxis"},{"attributes":{},"id":"49699","type":"NodesOnly"},{"attributes":{},"id":"49622","type":"WheelZoomTool"},{"attributes":{"fill_color":{"field":"nodeType","transform":{"id":"49671"}},"size":{"value":20}},"id":"49672","type":"Circle"},{"attributes":{"callback":null,"tooltips":[["Name","@name"],["NodeType","@nodeType"],["Description","@description"]]},"id":"49635","type":"HoverTool"},{"attributes":{},"id":"49609","type":"LinearScale"},{"attributes":{"callback":null},"id":"49636","type":"TapTool"},{"attributes":{},"id":"49694","type":"NodesOnly"},{"attributes":{},"id":"49704","type":"UnionRenderers"},{"attributes":{},"id":"49607","type":"DataRange1d"},{"attributes":{},"id":"49605","type":"DataRange1d"},{"attributes":{"graph_layout":{"CKV_K8S_10":[-0.15096633804640835,0.038824796154700275],"CKV_K8S_11":[-0.15132410370111313,-0.07010016201752683],"CKV_K8S_12":[-0.17294993650098409,-0.021024565500408706],"CKV_K8S_13":[-0.10066239245538053,0.12683958651905436],"CKV_K8S_15":[-0.01953319982160611,0.12048598011234128],"CKV_K8S_20":[0.06216220648387307,-0.010919381877692697],"CKV_K8S_22":[0.06241553626129802,0.08665318162463413],"CKV_K8S_23":[-0.2025207524082942,0.0326346866126704],"CKV_K8S_28":[-0.07280084046083517,-0.09726551975270235],"CKV_K8S_29":[-0.08084947472063199,0.17493851511553046],"CKV_K8S_30":[-0.10311014067867413,-0.05630897103828651],"CKV_K8S_31":[0.05877328514711302,0.039162263525863036],"CKV_K8S_37":[-0.15012209445202168,0.1406700601122945],"CKV_K8S_38":[-0.01588047338699002,0.17100970996298415],"CKV_K8S_40":[0.01625383022228804,-0.04142279287042673],"CKV_K8S_43":[-0.17899626849883962,0.09351249219422367],"CKV_K8S_49":[0.10141319194580739,-0.13784343244063996],"CKV_K8S_8":[-0.020559185461294795,-0.08087590251465054],"CKV_K8S_9":[0.03685200862130235,0.13084798454503002],"ClusterRole.default":[0.19989161375949965,-0.2469333350975005],"Deployment.default":[-0.0672266872587884,0.044841746698814716],"avacon/kube-scan":[-0.05025978458931876,0.026741238147185577],"deps":[1.0,-0.4644681782154924]}},"id":"49650","type":"StaticLayoutProvider"},{"attributes":{"formatter":{"id":"49689"},"major_label_policy":{"id":"49687"},"ticker":{"id":"49618"}},"id":"49617","type":"LinearAxis"},{"attributes":{"data":{"end":["CKV_K8S_49","CKV_K8S_38","CKV_K8S_40","CKV_K8S_29","CKV_K8S_23","CKV_K8S_31","CKV_K8S_43","CKV_K8S_30","CKV_K8S_22","CKV_K8S_28","CKV_K8S_20","CKV_K8S_12","CKV_K8S_37","CKV_K8S_15","CKV_K8S_10","CKV_K8S_11","CKV_K8S_13","CKV_K8S_8","CKV_K8S_9","ClusterRole.default","Deployment.default","CKV_K8S_40","CKV_K8S_29","CKV_K8S_23","CKV_K8S_31","CKV_K8S_43","CKV_K8S_30","CKV_K8S_22","CKV_K8S_28","CKV_K8S_20","CKV_K8S_12","CKV_K8S_37","CKV_K8S_15","CKV_K8S_10","CKV_K8S_11","CKV_K8S_13","CKV_K8S_8","CKV_K8S_9"],"start":["avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","avacon/kube-scan","CKV_K8S_49","CKV_K8S_38","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default"]},"selected":{"id":"49705"},"selection_policy":{"id":"49704"}},"id":"49647","type":"ColumnDataSource"},{"attributes":{},"id":"49611","type":"LinearScale"},{"attributes":{},"id":"49705","type":"Selection"},{"attributes":{"source":{"id":"49647"}},"id":"49649","type":"CDSView"},{"attributes":{"data":{"description":["avacon/kube-scan",null,"Minimize wildcard use in Roles and ClusterRoles","ClusterRole.RELEASE-NAME-kube-scan.default","Ensure that Service Account Tokens are only mounted where necessary","Deployment.RELEASE-NAME-kube-scan.default (container 1) - kube-scan","Containers should run as a high UID to avoid host conflict","Apply security context to your pods and containers","Minimize the admission of root containers","Ensure that the seccomp profile is set to docker/default or runtime/default","Image should use digest","Apply security context to your pods and containers","Use read-only filesystem for containers where possible","Minimize the admission of containers with the NET_RAW capability","Containers should not run with allowPrivilegeEscalation","Memory requests should be set","Minimize the admission of containers with capabilities assigned","Image Pull Policy should be Always","CPU requests should be set","CPU limits should be set","Memory limits should be set","Liveness Probe Should be Configured","Readiness Probe Should be Configured"],"filePath":[null,null,null,"/kube-scan/templates/clusterrole.yaml",null,"/kube-scan/templates/deployment.yaml",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"index":["avacon/kube-scan","deps","CKV_K8S_49","ClusterRole.default","CKV_K8S_38","Deployment.default","CKV_K8S_40","CKV_K8S_29","CKV_K8S_23","CKV_K8S_31","CKV_K8S_43","CKV_K8S_30","CKV_K8S_22","CKV_K8S_28","CKV_K8S_20","CKV_K8S_12","CKV_K8S_37","CKV_K8S_15","CKV_K8S_10","CKV_K8S_11","CKV_K8S_13","CKV_K8S_8","CKV_K8S_9"],"name":["avacon/kube-scan","deps","CKV_K8S_49","ClusterRole.default","CKV_K8S_38","Deployment.default","CKV_K8S_40","CKV_K8S_29","CKV_K8S_23","CKV_K8S_31","CKV_K8S_43","CKV_K8S_30","CKV_K8S_22","CKV_K8S_28","CKV_K8S_20","CKV_K8S_12","CKV_K8S_37","CKV_K8S_15","CKV_K8S_10","CKV_K8S_11","CKV_K8S_13","CKV_K8S_8","CKV_K8S_9"],"nodeType":["root","root","checkov","helmResource","checkov","helmResource","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov"],"x":[-0.05025978458931876,1.0,0.10141319194580739,0.19989161375949965,-0.01588047338699002,-0.0672266872587884,0.01625383022228804,-0.08084947472063199,-0.2025207524082942,0.05877328514711302,-0.17899626849883962,-0.10311014067867413,0.06241553626129802,-0.07280084046083517,0.06216220648387307,-0.17294993650098409,-0.15012209445202168,-0.01953319982160611,-0.15096633804640835,-0.15132410370111313,-0.10066239245538053,-0.020559185461294795,0.03685200862130235],"y":[0.026741238147185577,-0.4644681782154924,-0.13784343244063996,-0.2469333350975005,0.17100970996298415,0.044841746698814716,-0.04142279287042673,0.17493851511553046,0.0326346866126704,0.039162263525863036,0.09351249219422367,-0.05630897103828651,0.08665318162463413,-0.09726551975270235,-0.010919381877692697,-0.021024565500408706,0.1406700601122945,0.12048598011234128,0.038824796154700275,-0.07010016201752683,0.12683958651905436,-0.08087590251465054,0.13084798454503002]},"selected":{"id":"49703"},"selection_policy":{"id":"49702"}},"id":"49643","type":"ColumnDataSource"},{"attributes":{},"id":"49646","type":"MultiLine"},{"attributes":{"below":[{"id":"49613"}],"center":[{"id":"49616"},{"id":"49620"}],"height":768,"left":[{"id":"49617"}],"renderers":[{"id":"49641"},{"id":"49681"}],"title":{"id":"49603"},"toolbar":{"id":"49628"},"width":1024,"x_range":{"id":"49605"},"x_scale":{"id":"49609"},"y_range":{"id":"49607"},"y_scale":{"id":"49611"}},"id":"49602","subtype":"Figure","type":"Plot"},{"attributes":{"axis":{"id":"49617"},"dimension":1,"ticker":null},"id":"49620","type":"Grid"},{"attributes":{"source":{"id":"49643"}},"id":"49645","type":"CDSView"},{"attributes":{"overlay":{"id":"49627"}},"id":"49623","type":"BoxZoomTool"},{"attributes":{"edge_renderer":{"id":"49648"},"inspection_policy":{"id":"49694"},"layout_provider":{"id":"49650"},"node_renderer":{"id":"49644"},"selection_policy":{"id":"49699"}},"id":"49641","type":"GraphRenderer"},{"attributes":{},"id":"49624","type":"SaveTool"},{"attributes":{},"id":"49625","type":"ResetTool"},{"attributes":{},"id":"49626","type":"HelpTool"},{"attributes":{"bottom_units":"screen","fill_alpha":0.5,"fill_color":"lightgrey","left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"49627","type":"BoxAnnotation"},{"attributes":{"data_source":{"id":"49643"},"glyph":{"id":"49672"},"hover_glyph":null,"muted_glyph":null,"view":{"id":"49645"}},"id":"49644","type":"GlyphRenderer"},{"attributes":{"factors":["root","checkov","chart","helmResource","CVE","image"],"palette":["#3288bd","#66c2a5","#abdda4","#e6f598","#fee08b","#fdae61","#f46d43","#d53e4f"]},"id":"49671","type":"CategoricalColorMapper"},{"attributes":{},"id":"49621","type":"PanTool"},{"attributes":{"data_source":{"id":"49647"},"glyph":{"id":"49646"},"hover_glyph":null,"muted_glyph":null,"view":{"id":"49649"}},"id":"49648","type":"GlyphRenderer"},{"attributes":{"overlay":{"id":"49701"}},"id":"49637","type":"BoxSelectTool"}],"root_ids":["49602"]},"title":"Bokeh Application","version":"2.3.3"}}
+        </script>
+        <script type="text/javascript">
+          (function() {
+            var fn = function() {
+              Bokeh.safely(function() {
+                (function(root) {
+                  function embed_document(root) {
+                    
+                  var docs_json = document.getElementById('49925').textContent;
+                  var render_items = [{"docid":"01ebf9c9-b1cb-4188-ac9f-0a9e134b3d03","root_ids":["49602"],"roots":{"49602":"1b7f37f3-8cc4-4956-bae9-507c8147f0f4"}}];
+                  root.Bokeh.embed.embed_items(docs_json, render_items);
+                
+                  }
+                  if (root.Bokeh !== undefined) {
+                    embed_document(root);
+                  } else {
+                    var attempts = 0;
+                    var timer = setInterval(function(root) {
+                      if (root.Bokeh !== undefined) {
+                        clearInterval(timer);
+                        embed_document(root);
+                      } else {
+                        attempts++;
+                        if (attempts > 100) {
+                          clearInterval(timer);
+                          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+                        }
+                      }
+                    }, 10, root)
+                  }
+                })(window);
+              });
+            };
+            if (document.readyState != "loading") fn();
+            else document.addEventListener("DOMContentLoaded", fn);
+          })();
+        </script>
+    
+  </body>
+  
+</html>
+                        </div>
+
+                        <div id="post-share">
+                            <h3>Share</h3>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbridgecrewio.github.io%2fhelm-scanner%2fgraph%2f2021%2favacon-kube-scan%2f" target="_blank">
+                                <i class="fab fa-facebook fa-2x"></i>
+                            </a>
+                            <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fbridgecrewio.github.io%2fhelm-scanner%2fgraph%2f2021%2favacon-kube-scan%2f" target="_blank">
+                                <i class="fab fa-linkedin fa-2x"></i>
+                            </a>
+                            <a href="javascript:void((function()%7Bvar%20e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('src','https://assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e)%7D)());">
+                                <i class="fab fa-pinterest-square fa-2x"></i>
+                            </a>
+
+                            <a href="http://reddit.com/submit?url=https%3a%2f%2fbridgecrewio.github.io%2fhelm-scanner%2fgraph%2f2021%2favacon-kube-scan%2f&amp;title=avacon-kube-scan" target="_blank">
+                                <i class="fab fa-reddit-square fa-2x"></i>
+                            </a>
+
+                            <a href="https://twitter.com/share?url=https%3a%2f%2fbridgecrewio.github.io%2fhelm-scanner%2fgraph%2f2021%2favacon-kube-scan%2f&amp;text=avacon-kube-scan&amp;hashtags=verummeum" target="_blank">
+                                <i class="fab fa-twitter-square fa-2x"></i>
+                            </a>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <footer id="footer">
+    <div class="container">
+
+        <div class="col-sm-6">
+            <h4>Subscribe</h4>
+
+            <a href="/index.xml">RSS</a>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <h4>Navigate</h4>
+
+            <div class="navigate">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <a href="/">Home</a>
+                        <a href="/about">About</a>
+                    </div>
+                    <div class="col-xs-6">
+                        <a href="/search">Search</a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
+
+    </div>
+
+</footer>
+
+<div id="copyright">
+    <div class="container">
+        <div class="col-md-12">
+            <p class="pull-left">
+                <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> &nbsp;-&nbsp; helm-scanner 2021</p>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<script src="https://bridgecrewio.github.io/helm-scanner/js/bundle.min.bcdfd361ffe78d649b5036ab86bb041b8b0df0af5e51478ab6bc54403c0da1b51415298ede224e3f21f9d35bd450e8c46598b7a24d3a2a5c4ea3768d50e4ddbf.js" integrity="sha512-vN/TYf/njWSbUDarhrsEG4sN8K9eUUeKtrxUQDwNobUUFSmO3iJOPyH501vUUOjEZZi3ok06KlxOo3aNUOTdvw=="></script>
+
+
+</body>
+
+</html>

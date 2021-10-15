@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="all,follow">
+  <meta name="googlebot" content="index,follow,snippet,archive">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>kubevela-vela-rollout</title>
+  <meta name="author" content="Matt Johnson" />
+
+  
+
+  
+  <meta name="description" content="View blast-radius graphs for public artifacthub.io HELM charts">	
+  
+
+  <meta name="generator" content="Hugo 0.83.1" />
+
+  
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://bridgecrewio.github.io/helm-scanner/css/bundle/bundle.min.css" type="text/css">
+
+  
+  <link rel="shortcut icon" href="https://bridgecrewio.github.io/helm-scanner/img/favicon.ico" type="image/x-icon" />
+
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bridgecrewio.github.io/helm-scanner/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://bridgecrewio.github.io/helm-scanner/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://bridgecrewio.github.io/helm-scanner/img/favicon-16x16.png">
+  <link rel="manifest" href="https://bridgecrewio.github.io/helm-scanner/img/site.webmanifest">
+  <link rel="mask-icon" href="https://bridgecrewio.github.io/helm-scanner/img/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#2d89ef">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="alternate" href="https://bridgecrewio.github.io/index.xml" type="application/rss+xml" title="helm-scanner">
+
+  
+  <meta property="og:title" content="kubevela-vela-rollout" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bridgecrewio.github.io/helm-scanner/graph/2021/kubevela-vela-rollout//" />
+  <meta property="og:image" content="" />
+
+</head>
+
+
+<body>
+
+    <div id="all">
+
+        <header>
+
+            <div>
+
+    <div class="navbar navbar-default yamm" role="navigation" id="navbar">
+
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand home" href="https://bridgecrewio.github.io/helm-scanner/">
+                    <img src="https://bridgecrewio.github.io/helm-scanner/img/bridgecrew.png" alt="kubevela-vela-rollout logo">
+                    <span class="sr-only">kubevela-vela-rollout - go to HELM listings</span>
+                </a>
+                <div class="navbar-buttons">
+                    <button type="button" class="navbar-toggle btn-template-main" data-toggle="collapse" data-target="#navigation">
+                      <span class="sr-only">Toggle Navigation</span>
+                        <i class="fa fa-align-justify"></i>
+                    </button>
+                </div>
+            </div>
+            
+
+            <div class="navbar-collapse collapse" id="navigation">
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  <li class="dropdown">
+                    
+                    <a href="/helm-scanner/search/"><i class='fas fa-search'></i> search</a>
+                    
+                  </li>
+                  
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    
+
+</div>
+
+
+
+
+        </header>
+
+        <div id="heading-breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>kubevela-vela-rollout</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <div id="content">
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-12" id="graph-post">
+
+                                        
+
+                        <div id="post-content">
+                            
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    
+      <meta charset="utf-8">
+      <title>Bokeh Plot</title>
+      
+      
+        
+          
+        
+        
+          
+        <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.3.min.js" integrity="sha384-dM3QQsP+wXdHg42wTqW85BjZQdLNNIXqlPw/BgKoExPmTG7ZLML4EGqLMfqHT6ON" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            Bokeh.set_log_level("info");
+        </script>
+        
+      
+      
+    
+  </head>
+  
+  
+  <body>
+    
+      
+        
+          
+          
+            
+              <div class="bk-root" id="7b76070d-5cb6-400a-94a0-e63c8198faf6" data-root-id="621654"></div>
+            
+          
+        
+      
+      
+        <script type="application/json" id="621977">
+          {"a0db008c-1847-4db0-a640-bafe42ee3b7d":{"defs":[],"roots":{"references":[{"attributes":{"below":[{"id":"621665"}],"center":[{"id":"621668"},{"id":"621672"}],"height":768,"left":[{"id":"621669"}],"renderers":[{"id":"621693"},{"id":"621733"}],"title":{"id":"621655"},"toolbar":{"id":"621680"},"width":1024,"x_range":{"id":"621657"},"x_scale":{"id":"621661"},"y_range":{"id":"621659"},"y_scale":{"id":"621663"}},"id":"621654","subtype":"Figure","type":"Plot"},{"attributes":{"data_source":{"id":"621699"},"glyph":{"id":"621698"},"hover_glyph":null,"muted_glyph":null,"view":{"id":"621701"}},"id":"621700","type":"GlyphRenderer"},{"attributes":{"data":{"description":["kubevela/vela-rollout",null,"Ensure that Service Account Tokens are only mounted where necessary","Deployment.RELEASE-NAME-vela-rollout.default (container 0) - RELEASE-NAME","Containers should run as a high UID to avoid host conflict","Minimize the admission of root containers","Ensure that the seccomp profile is set to docker/default or runtime/default","Image should use digest","Use read-only filesystem for containers where possible","Minimize the admission of containers with the NET_RAW capability","Containers should not run with allowPrivilegeEscalation","Minimize the admission of containers with capabilities assigned","Pod.RELEASE-NAME-vela-rollout-test-connection.default (container 0) - wget","Apply security context to your pods and containers","Apply security context to your pods and containers","Memory requests should be set","CPU requests should be set","Image Tag should be fixed - not latest or blank","CPU limits should be set","Memory limits should be set","Liveness Probe Should be Configured","Readiness Probe Should be Configured"],"filePath":[null,null,null,"/vela-rollout/templates/vela-runtime-rollout.yaml",null,null,null,null,null,null,null,null,"/vela-rollout/templates/test/test-application.yaml",null,null,null,null,null,null,null,null,null],"index":["kubevela/vela-rollout","deps","CKV_K8S_38","Deployment.default","CKV_K8S_40","CKV_K8S_23","CKV_K8S_31","CKV_K8S_43","CKV_K8S_22","CKV_K8S_28","CKV_K8S_20","CKV_K8S_37","Pod.default","CKV_K8S_29","CKV_K8S_30","CKV_K8S_12","CKV_K8S_10","CKV_K8S_14","CKV_K8S_11","CKV_K8S_13","CKV_K8S_8","CKV_K8S_9"],"name":["kubevela/vela-rollout","deps","CKV_K8S_38","Deployment.default","CKV_K8S_40","CKV_K8S_23","CKV_K8S_31","CKV_K8S_43","CKV_K8S_22","CKV_K8S_28","CKV_K8S_20","CKV_K8S_37","Pod.default","CKV_K8S_29","CKV_K8S_30","CKV_K8S_12","CKV_K8S_10","CKV_K8S_14","CKV_K8S_11","CKV_K8S_13","CKV_K8S_8","CKV_K8S_9"],"nodeType":["root","root","checkov","helmResource","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov","helmResource","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov","checkov"],"x":[0.01183453418471959,-0.43664329889190523,-0.09969512461040032,0.00792796750633803,0.1287808200239253,-0.055303868219924834,-0.10055139265778333,0.09132793003840806,0.12359979178732501,0.04506405022262021,-0.07701232855642816,0.0011710209795841237,0.03090994326055941,-0.062198518903035155,0.06713648684682554,0.00557881678412571,0.14642138552593625,-0.12274996841041563,0.17613581353689514,0.08254450998603748,-0.15612827301054968,0.1918497025771416],"y":[0.05260578333585665,-1.0,-0.04795398737587734,-0.014867916684423782,-0.005244821214173568,-0.08526055850389519,0.007916154054560377,-0.06549842628065214,0.05879602062572427,0.13049784569423337,0.08147122612384407,-0.10094552326475927,0.053372472467014265,0.19732553493815194,-0.12133161296657251,0.2208459764292413,0.16667358184927553,0.14919206348573028,-0.043510180698069986,0.21257590926024203,0.06254569918362,0.09079475954093012]},"selected":{"id":"621755"},"selection_policy":{"id":"621754"}},"id":"621695","type":"ColumnDataSource"},{"attributes":{"edge_renderer":{"id":"621700"},"inspection_policy":{"id":"621746"},"layout_provider":{"id":"621702"},"node_renderer":{"id":"621696"},"selection_policy":{"id":"621751"}},"id":"621693","type":"GraphRenderer"},{"attributes":{},"id":"621738","type":"BasicTickFormatter"},{"attributes":{},"id":"621754","type":"UnionRenderers"},{"attributes":{},"id":"621670","type":"BasicTicker"},{"attributes":{"source":{"id":"621695"}},"id":"621697","type":"CDSView"},{"attributes":{"callback":null},"id":"621688","type":"TapTool"},{"attributes":{},"id":"621698","type":"MultiLine"},{"attributes":{"overlay":{"id":"621679"}},"id":"621675","type":"BoxZoomTool"},{"attributes":{},"id":"621757","type":"Selection"},{"attributes":{},"id":"621756","type":"UnionRenderers"},{"attributes":{},"id":"621678","type":"HelpTool"},{"attributes":{},"id":"621739","type":"AllLabels"},{"attributes":{"formatter":{"id":"621741"},"major_label_policy":{"id":"621739"},"ticker":{"id":"621670"}},"id":"621669","type":"LinearAxis"},{"attributes":{"overlay":{"id":"621753"}},"id":"621689","type":"BoxSelectTool"},{"attributes":{"text":"kubevela-vela-rollout"},"id":"621655","type":"Title"},{"attributes":{},"id":"621741","type":"BasicTickFormatter"},{"attributes":{"bottom_units":"screen","fill_alpha":0.5,"fill_color":"lightgrey","left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"621679","type":"BoxAnnotation"},{"attributes":{"factors":["root","checkov","chart","helmResource","CVE","image"],"palette":["#3288bd","#66c2a5","#abdda4","#e6f598","#fee08b","#fdae61","#f46d43","#d53e4f"]},"id":"621723","type":"CategoricalColorMapper"},{"attributes":{"axis":{"id":"621669"},"dimension":1,"ticker":null},"id":"621672","type":"Grid"},{"attributes":{},"id":"621661","type":"LinearScale"},{"attributes":{},"id":"621736","type":"AllLabels"},{"attributes":{},"id":"621657","type":"DataRange1d"},{"attributes":{"active_multi":null,"tools":[{"id":"621673"},{"id":"621674"},{"id":"621675"},{"id":"621676"},{"id":"621677"},{"id":"621678"},{"id":"621687"},{"id":"621688"},{"id":"621689"}]},"id":"621680","type":"Toolbar"},{"attributes":{},"id":"621666","type":"BasicTicker"},{"attributes":{},"id":"621663","type":"LinearScale"},{"attributes":{"axis":{"id":"621665"},"ticker":null},"id":"621668","type":"Grid"},{"attributes":{"data":{"end":["CKV_K8S_38","CKV_K8S_40","CKV_K8S_23","CKV_K8S_31","CKV_K8S_43","CKV_K8S_22","CKV_K8S_28","CKV_K8S_20","CKV_K8S_37","CKV_K8S_29","CKV_K8S_30","CKV_K8S_12","CKV_K8S_10","CKV_K8S_14","CKV_K8S_11","CKV_K8S_13","CKV_K8S_8","CKV_K8S_9","Deployment.default","Pod.default","CKV_K8S_40","CKV_K8S_23","CKV_K8S_31","CKV_K8S_43","CKV_K8S_22","CKV_K8S_28","CKV_K8S_20","CKV_K8S_37","Pod.default","Pod.default","Pod.default","Pod.default","Pod.default","Pod.default","Pod.default","Pod.default","CKV_K8S_29","CKV_K8S_30","CKV_K8S_12","CKV_K8S_10","CKV_K8S_14","CKV_K8S_11","CKV_K8S_13","CKV_K8S_8","CKV_K8S_9"],"start":["kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","kubevela/vela-rollout","CKV_K8S_38","CKV_K8S_38","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","Deployment.default","CKV_K8S_40","CKV_K8S_23","CKV_K8S_31","CKV_K8S_43","CKV_K8S_22","CKV_K8S_28","CKV_K8S_20","CKV_K8S_37","Pod.default","Pod.default","Pod.default","Pod.default","Pod.default","Pod.default","Pod.default","Pod.default","Pod.default"]},"selected":{"id":"621757"},"selection_policy":{"id":"621756"}},"id":"621699","type":"ColumnDataSource"},{"attributes":{"data_source":{"id":"621695"},"glyph":{"id":"621724"},"hover_glyph":null,"muted_glyph":null,"view":{"id":"621697"}},"id":"621696","type":"GlyphRenderer"},{"attributes":{},"id":"621674","type":"WheelZoomTool"},{"attributes":{"formatter":{"id":"621738"},"major_label_policy":{"id":"621736"},"ticker":{"id":"621666"}},"id":"621665","type":"LinearAxis"},{"attributes":{},"id":"621751","type":"NodesOnly"},{"attributes":{},"id":"621677","type":"ResetTool"},{"attributes":{"callback":null,"tooltips":[["Name","@name"],["NodeType","@nodeType"],["Description","@description"]]},"id":"621687","type":"HoverTool"},{"attributes":{},"id":"621673","type":"PanTool"},{"attributes":{"fill_color":{"field":"nodeType","transform":{"id":"621723"}},"size":{"value":20}},"id":"621724","type":"Circle"},{"attributes":{},"id":"621659","type":"DataRange1d"},{"attributes":{"source":{"id":"621699"}},"id":"621701","type":"CDSView"},{"attributes":{},"id":"621755","type":"Selection"},{"attributes":{"background_fill_color":{"value":"white"},"source":{"id":"621695"},"text":{"field":"name"},"x":{"field":"x"},"y":{"field":"y"}},"id":"621733","type":"LabelSet"},{"attributes":{},"id":"621746","type":"NodesOnly"},{"attributes":{"bottom_units":"screen","fill_alpha":0.5,"fill_color":"lightgrey","left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"621753","type":"BoxAnnotation"},{"attributes":{},"id":"621676","type":"SaveTool"},{"attributes":{"graph_layout":{"CKV_K8S_10":[0.14642138552593625,0.16667358184927553],"CKV_K8S_11":[0.17613581353689514,-0.043510180698069986],"CKV_K8S_12":[0.00557881678412571,0.2208459764292413],"CKV_K8S_13":[0.08254450998603748,0.21257590926024203],"CKV_K8S_14":[-0.12274996841041563,0.14919206348573028],"CKV_K8S_20":[-0.07701232855642816,0.08147122612384407],"CKV_K8S_22":[0.12359979178732501,0.05879602062572427],"CKV_K8S_23":[-0.055303868219924834,-0.08526055850389519],"CKV_K8S_28":[0.04506405022262021,0.13049784569423337],"CKV_K8S_29":[-0.062198518903035155,0.19732553493815194],"CKV_K8S_30":[0.06713648684682554,-0.12133161296657251],"CKV_K8S_31":[-0.10055139265778333,0.007916154054560377],"CKV_K8S_37":[0.0011710209795841237,-0.10094552326475927],"CKV_K8S_38":[-0.09969512461040032,-0.04795398737587734],"CKV_K8S_40":[0.1287808200239253,-0.005244821214173568],"CKV_K8S_43":[0.09132793003840806,-0.06549842628065214],"CKV_K8S_8":[-0.15612827301054968,0.06254569918362],"CKV_K8S_9":[0.1918497025771416,0.09079475954093012],"Deployment.default":[0.00792796750633803,-0.014867916684423782],"Pod.default":[0.03090994326055941,0.053372472467014265],"deps":[-0.43664329889190523,-1.0],"kubevela/vela-rollout":[0.01183453418471959,0.05260578333585665]}},"id":"621702","type":"StaticLayoutProvider"}],"root_ids":["621654"]},"title":"Bokeh Application","version":"2.3.3"}}
+        </script>
+        <script type="text/javascript">
+          (function() {
+            var fn = function() {
+              Bokeh.safely(function() {
+                (function(root) {
+                  function embed_document(root) {
+                    
+                  var docs_json = document.getElementById('621977').textContent;
+                  var render_items = [{"docid":"a0db008c-1847-4db0-a640-bafe42ee3b7d","root_ids":["621654"],"roots":{"621654":"7b76070d-5cb6-400a-94a0-e63c8198faf6"}}];
+                  root.Bokeh.embed.embed_items(docs_json, render_items);
+                
+                  }
+                  if (root.Bokeh !== undefined) {
+                    embed_document(root);
+                  } else {
+                    var attempts = 0;
+                    var timer = setInterval(function(root) {
+                      if (root.Bokeh !== undefined) {
+                        clearInterval(timer);
+                        embed_document(root);
+                      } else {
+                        attempts++;
+                        if (attempts > 100) {
+                          clearInterval(timer);
+                          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+                        }
+                      }
+                    }, 10, root)
+                  }
+                })(window);
+              });
+            };
+            if (document.readyState != "loading") fn();
+            else document.addEventListener("DOMContentLoaded", fn);
+          })();
+        </script>
+    
+  </body>
+  
+</html>
+                        </div>
+
+                        <div id="post-share">
+                            <h3>Share</h3>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fbridgecrewio.github.io%2fhelm-scanner%2fgraph%2f2021%2fkubevela-vela-rollout%2f" target="_blank">
+                                <i class="fab fa-facebook fa-2x"></i>
+                            </a>
+                            <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fbridgecrewio.github.io%2fhelm-scanner%2fgraph%2f2021%2fkubevela-vela-rollout%2f" target="_blank">
+                                <i class="fab fa-linkedin fa-2x"></i>
+                            </a>
+                            <a href="javascript:void((function()%7Bvar%20e=document.createElement('script');e.setAttribute('type','text/javascript');e.setAttribute('charset','UTF-8');e.setAttribute('src','https://assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e)%7D)());">
+                                <i class="fab fa-pinterest-square fa-2x"></i>
+                            </a>
+
+                            <a href="http://reddit.com/submit?url=https%3a%2f%2fbridgecrewio.github.io%2fhelm-scanner%2fgraph%2f2021%2fkubevela-vela-rollout%2f&amp;title=kubevela-vela-rollout" target="_blank">
+                                <i class="fab fa-reddit-square fa-2x"></i>
+                            </a>
+
+                            <a href="https://twitter.com/share?url=https%3a%2f%2fbridgecrewio.github.io%2fhelm-scanner%2fgraph%2f2021%2fkubevela-vela-rollout%2f&amp;text=kubevela-vela-rollout&amp;hashtags=verummeum" target="_blank">
+                                <i class="fab fa-twitter-square fa-2x"></i>
+                            </a>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <footer id="footer">
+    <div class="container">
+
+        <div class="col-sm-6">
+            <h4>Subscribe</h4>
+
+            <a href="/index.xml">RSS</a>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <h4>Navigate</h4>
+
+            <div class="navigate">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <a href="/">Home</a>
+                        <a href="/about">About</a>
+                    </div>
+                    <div class="col-xs-6">
+                        <a href="/search">Search</a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="hidden-md hidden-lg hidden-sm">
+
+        </div>
+
+    </div>
+
+</footer>
+
+<div id="copyright">
+    <div class="container">
+        <div class="col-md-12">
+            <p class="pull-left">
+                <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> &nbsp;-&nbsp; helm-scanner 2021</p>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+<script src="https://bridgecrewio.github.io/helm-scanner/js/bundle.min.bcdfd361ffe78d649b5036ab86bb041b8b0df0af5e51478ab6bc54403c0da1b51415298ede224e3f21f9d35bd450e8c46598b7a24d3a2a5c4ea3768d50e4ddbf.js" integrity="sha512-vN/TYf/njWSbUDarhrsEG4sN8K9eUUeKtrxUQDwNobUUFSmO3iJOPyH501vUUOjEZZi3ok06KlxOo3aNUOTdvw=="></script>
+
+
+</body>
+
+</html>
