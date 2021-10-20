@@ -125,21 +125,21 @@
         <div id="content">
           <div class="container">
             <h1 id="helm-scanner-graph-viewer">Helm-Scanner Graph Viewer</h1>
-<p>This website allows you to search and view CVE and Misconfiguration graphs for all <a href="ArtifactHub.io">ArtifactHub.io</a> Helm charts scanned by Helm Scanner.</p>
-<p>Helm Scanner scan&rsquo;s both Helm chart misconfigurations as well as known image vulnerabilities and visualize the results with a graph. You can use this repository of graphs to see how every Helm chart on <a href="ArtifactHub.io">ArtifactHub.io</a> <em>including the ones in your own infrastructure</em> stacks up. You can <a href="/helm-scanner/search/">search</a> by known CVE, chart name, and Checkov check name.</p>
+<p>This website allows you to search and view CVE and misconfiguration graphs for all <a href="ArtifactHub.io">Artifact Hub</a> Helm charts scanned by Helm Scanner.</p>
+<p>Helm Scanner scans both Helm chart misconfigurations as well as known image vulnerabilities and visualizes the results with a graph. You can use this repository of graphs to see how every Helm chart on <a href="ArtifactHub.io">Artifact Hub</a> <em>including the ones in your own infrastructure</em> stacks up. You can <a href="/helm-scanner/search/">search</a> by known CVE, chart name, and Checkov policy name.</p>
 <p>Read more about our research methodology <a href="https://bridgecrew.io/blog/helm-scanner-graphing-misconfigurations-and-cves-blast-radius">on our blog</a> and check out the <a href="https://github.com/bridgecrewio/helm-scanner">Helm Scanner code</a> for yourself.</p>
-<p>We created this tool to help teams' visualise the impact, or &ldquo;blast radius&rdquo; of infrastructure-as-code misconfigurations when vulnerabilities (CVE&rsquo;s) are also present in the consumed container images.
+<p>We created this tool to help teams visualize the impact, or &ldquo;blast radius,&rdquo; of infrastructure as code (IaC) misconfigurations when vulnerabilities (CVEs) are also present in the consumed container images.
 The graphs contain interconnected nodes of the following data:</p>
 <ul>
-<li>Any infrastructure miscofigurations found in the templated-out HELM charts. These appear on the graph as <a href="https://checkov.io">Checkov.io</a> Policy violations.</li>
-<li>Any Kubernetes resource type with one or more Checkov violations.</li>
-<li>Any Images defined within the Kubernetes resource.</li>
-<li>Any CVE&rsquo;s with a CVSS score above 5 found within the scanned images.</li>
+<li>Lime green nodes: Any Kubernetes resource type with one or more Checkov violations.</li>
+<li>Teal nodes: Any infrastructure misconfigurations found in the Helm charts. These appear on the graph as <a href="https://checkov.io">Checkov</a> policy violations.</li>
+<li>Orange nodes: Any images defined within the Kubernetes resource.</li>
+<li>Yellow nodes: Any CVEs with a CVSS score above 5 found within the scanned images.</li>
 </ul>
 <p><img src="/helm-scanner/img/example.png" alt="Example Graph"></p>
-<p>With this information, our aim is to help visualize a potential attack, allowing the user to see connections between insecure infrastructure configurations and the CVE attack surfaces they may expose.
-We welcome feedback, ideas and suggestions via our <a href="https://github.com/bridgecrewio/helm-scanner/issues">github issues page</a> where you will also find <a href="https://github.com/bridgecrewio/helm-scanner">the source for the scanner</a> and graph builder itself.</p>
-<p>To use the site, pick a HELM chart from the list below or use the <a href="/helm-scanner/search/">Search</a>. Then click <code>VIEW BLASTRADIUS GRAPH</code> to view the graph as a Bokeh interactive graph.</p>
+<p>With this information, our aim is to help visualize a potential attack by allowing you to see connections between insecure infrastructure configurations and the CVE attack surfaces they may expose.
+We welcome feedback, ideas, and suggestions via our <a href="https://github.com/bridgecrewio/helm-scanner/issues">GitHub issues page</a> where you will also find <a href="https://github.com/bridgecrewio/helm-scanner">the source for Helm Scanner</a> and graph builder itself.</p>
+<p>To use the site, pick a Helm chart from the list below or use the <a href="/helm-scanner/search/">Search</a>. Then select <code>VIEW BLASTRADIUS GRAPH</code> to view the graph as a Bokeh interactive graph.</p>
 <hr>
  
             <p>
